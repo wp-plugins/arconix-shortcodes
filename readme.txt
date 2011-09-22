@@ -32,7 +32,7 @@ Upgrade normally via your Wordpress admin -> Plugins panel.
 
 Visit the plugin's [Wiki Page](http://arcnx.co/aswiki "Arconix Shortcodes Wiki")
 
-= I have a problem or a bug
+= I have a problem or a bug =
 
 Check out the WordPress [support forum](http://wordpress.org/tags/arconix-shortcodes?forum_id=10)
 
