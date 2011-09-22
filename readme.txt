@@ -1,4 +1,4 @@
-== Arconix Shortcodes ==
+=== Plugin Name ===
 Contributors: jgardner03
 Tags: shortcodes, tabs, toggle, buttons
 Requires at least: 2.5
