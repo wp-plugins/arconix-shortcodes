@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: jgardner03
-Tags: shortcodes, tabs, toggle, buttons
+Tags: arconix, shortcodes, tabs, toggle, buttons, accordion
 Requires at least: 2.5
 Tested up to: 3.2.9
 Stable tag: trunk
