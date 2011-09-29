@@ -4,7 +4,7 @@
  * Plugin URI: http://arconixpc.com/plugins/arconix-shortcodes
  * Description: A handy collection of shortcodes for your site.
  *
- * Version: 0.9
+ * Version: 0.9.1
  *
  * Author: John Gardner
  * Author URI: http://johngardner.co/
@@ -208,16 +208,19 @@ function arconix_abbr_shortcode ( $atts, $content = null ) {
  *
  * @package arconix-shortcodes
  * @since	0.9
+ * @version	0.9.1
  *
  */
 function arconix_accordions_shortcode( $atts, $content = null ) {
     /*
     Supported Attributes
-	type   =>   vertical, horizontal
+	type	=>  vertical
+	start	=>  none, 1, 2, 3, 4, 5
     */
     $defaults = apply_filters( 'arconix_accordions_shortcode_args',
 	array(
 	    'type' => 'vertical',
+	    'load' => '1',
 	    'css' => ''
 	)
     );
@@ -225,7 +228,7 @@ function arconix_accordions_shortcode( $atts, $content = null ) {
 
     if ( $css != '' ) { $css = ' ' . $css; }
 
-    return '<div class="arconix-accordions-' . $type . $css .'">'. arconix_remove_wpautop( $content ) . '</div>';
+    return '<div class="arconix-accordions arconix-accordions-' . $type . ' arconix-accordions-'. $load . $css .'">'. arconix_remove_wpautop( $content ) . '</div>';
 }
 
 /**

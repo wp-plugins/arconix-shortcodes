@@ -19,5 +19,12 @@ jQuery(document).ready( function(){
     jQuery("ul.arconix-tabs").tabs("div.arconix-panes > div");
 
     //Accordion
-    jQuery(".arconix-accordions-vertical").tabs(".arconix-accordions-vertical div.arconix-accordion-content", {tabs: 'h3', effect: 'slide', initialIndex: 0 });
+    jQuery(".arconix-accordions-0").tabs("div.arconix-accordion-content", {tabs: 'h3', effect: 'slide', initialIndex: null });
+    jQuery(".arconix-accordions-1").tabs("div.arconix-accordion-content", {tabs: 'h3', effect: 'slide', initialIndex: 0 });
+    jQuery(".arconix-accordions-2").tabs("div.arconix-accordion-content", {tabs: 'h3', effect: 'slide', initialIndex: 1 });
+    jQuery(".arconix-accordions-3").tabs("div.arconix-accordion-content", {tabs: 'h3', effect: 'slide', initialIndex: 2 });
+    jQuery(".arconix-accordions-4").tabs("div.arconix-accordion-content", {tabs: 'h3', effect: 'slide', initialIndex: 3 });
+    jQuery(".arconix-accordions-5").tabs("div.arconix-accordion-content", {tabs: 'h3', effect: 'slide', initialIndex: 5 });
+
+    /*jQuery(".arconix-accordions-1").tabs("div.arconix-accordion-content", { initialIndex: 2 });*/
 });

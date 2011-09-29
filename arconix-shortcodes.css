@@ -7,7 +7,7 @@
 
 /* Accordion Styling
 ------------------------------------------------------------ */
-.arconix-accordions-vertical {
+.arconix-accordions {
     border: 1px solid #ddd;
     border-bottom: none;
     margin: 10px 0; }
@@ -28,12 +28,12 @@
     text-transform: uppercase;
 }
 
-.arconix-accordions-vertical h3:hover { background-color: #f0f0f0; }
+.arconix-accordions h3:hover { background-color: #f0f0f0; }
 
 /* Active Accordion */
-.arconix-accordions-vertical h3.current,
-.arconix-accordions-vertical h3.current:hover,
-.arconix-accordions-vertical h3.current:active {
+.arconix-accordions h3.current,
+.arconix-accordions h3.current:hover,
+.arconix-accordions h3.current:active {
     background-color: #f0f0f0;
     cursor: default;
 }
@@ -55,7 +55,7 @@
     font-weight: normal;
     margin: 0 0 -5px 0;
     font-size: 16px;
-    color: #999;
+    color: #666;
 }
 
 /* Box Styling

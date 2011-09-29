@@ -2,14 +2,14 @@
 Contributors: jgardner03
 Tags: arconix, shortcodes, tabs, toggle, buttons, accordion
 Requires at least: 2.5
-Tested up to: 3.2.9
+Tested up to: 3.2.1
 Stable tag: trunk
 
 Arconix Shortcodes provides a number of useful design elements to compliment any website.
 
 == Description ==
 
-With this plugin you can easily add various kinds of boxes, buttons, tabs, accordions, unordered lists and more. Choose from the supplied options or add your own.
+With this plugin you can easily add various kinds of boxes, buttons, tabs, accordions, unordered lists and more. Choose from the supplied options or add your own with a little CSS.
 
 = Features =
 * 8 style shortcodes (boxes, tabs, toggles, etc...)
@@ -47,6 +47,9 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 4. Unordered list styles
 
 == Changelog ==
+
+= 0.9.1 =
+* Added a load attribute to the accordions shortcode. This attribute allows the user to define which accordion is open by default when the page loads. The default is 1 and will load with the 1st accordion visible, but supports 0 (all accordions load closed) through 5 (the 5th accordion is open on load).
 
 = 0.9 =
 * Initial Release
