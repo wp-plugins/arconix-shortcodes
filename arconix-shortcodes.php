@@ -4,7 +4,7 @@
  * Plugin URI: http://arconixpc.com/plugins/arconix-shortcodes
  * Description: A handy collection of shortcodes for your site.
  *
- * Version: 0.9.1
+ * Version: 0.9.2
  *
  * Author: John Gardner
  * Author URI: http://johngardner.co/
@@ -13,61 +13,62 @@
  * License URI: http://www.opensource.org/licenses/gpl-license.php
  */
 
-/*
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
 
 /* Allow shortcodes to be used in text widgets */
-add_filter('widget_text', 'do_shortcode');
+add_filter( 'widget_text', 'do_shortcode' );
 
 /* Remove the wpautop from shortcodes */
 function arconix_remove_wpautop( $content ) {
     $content = do_shortcode( shortcode_unautop( $content ) );
-    $content = preg_replace( '#^<\/p>|^<br \/>|<p>$#', '', $content);
+    $content = preg_replace( '#^<\/p>|^<br \/>|<p>$#', '', $content );
     return $content;
 }
 
-/* Enqueue necessary javascript (shortcode javascript can be overriden by putting your own file in the root of your theme's folder */
-add_action( 'init', 'arconix_enqueue_shortcode_js' );
-function arconix_enqueue_shortcode_js() {
-    if( !is_admin() ) {
-	wp_register_script('jquery-tools', 'http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js', array( 'jquery' ), '1.2.5');
+/* Start the plugin
+ * shortcode javascript can be overriden by putting your own file in the root of your theme's folder
+ */
+add_action( 'init', 'arconix_shortcode_init' );
+function arconix_shortcode_init() {
 
-	if( file_exists( get_stylesheet_directory()."/arconix-shortcodes.js" ) ) {
-	    wp_enqueue_script( 'arconix-shortcode-js', get_stylesheet_directory_uri() . '/arconix-shortcodes.js', array('jquery', 'jquery-tools'), '0.9', true );
-	}
-	elseif( file_exists( get_template_directory()."/arconix-shortcodes.js" ) ) {
-	    wp_enqueue_script( 'arconix-shortcode-js', get_template_directory_uri() . '/arconix-shortcodes.js', array('jquery', 'jquery-tools'), '0.9', true );
-	}
-	else {
-	    wp_enqueue_script( 'arconix-shortcode-js', plugins_url('arconix-shortcodes.js', __FILE__), array('jquery', 'jquery-tools'), '0.9', true );
-	}
+    define( 'ASC_VERSION', '0.9.2' );
+
+    wp_register_script( 'jquery-tools', 'http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js', array(), '1.2.5', true );
+
+    if( file_exists( get_stylesheet_directory() . "/arconix-shortcodes.js" ) ) {
+	wp_register_script( 'arconix-shortcode-js', get_stylesheet_directory_uri() . '/arconix-shortcodes.js', array( 'jquery-tools'), ASC_VERSION, true );
+    }
+    elseif( file_exists( get_template_directory() . "/arconix-shortcodes.js" ) ) {
+	wp_register_script( 'arconix-shortcode-js', get_template_directory_uri() . '/arconix-shortcodes.js', array('jquery-tools'), ASC_VERSION, true );
+    }
+    else {
+	wp_register_script( 'arconix-shortcode-js', plugins_url('arconix-shortcodes.js', __FILE__), array('jquery-tools'), ASC_VERSION, true );
     }
 }
+
+/* Load the plugin script (when defined to do so) */
+add_action( 'wp_footer', 'arconix_shortcode_load_scripts' );
+function arconix_shortcode_load_scripts() {
+    global $_asc_load;
+
+    if ( ! $_asc_load )
+	return;
+
+    wp_print_scripts( 'arconix-shortcode-js' );
+}
+
+
 
 /* Enqueue CSS (can be overriden by including your own css file in the root of your theme's folder) */
 add_action( 'wp_enqueue_scripts', 'arconix_enqueue_shortcode_css' );
 function arconix_enqueue_shortcode_css() {
-    if( file_exists( get_stylesheet_directory()."/arconix-shortcodes.css" ) ) {
-	wp_enqueue_style( 'arconix-shortcodes', get_stylesheet_directory_uri() . '/arconix-shortcodes.css', array(), '0.9' );
+    if( file_exists( get_stylesheet_directory() . "/arconix-shortcodes.css" ) ) {
+	wp_enqueue_style( 'arconix-shortcodes', get_stylesheet_directory_uri() . '/arconix-shortcodes.css', array(), ASC_VERSION );
     }
-    elseif( file_exists( get_template_directory()."/arconix-shortcodes.css" ) ) {
-	wp_enqueue_style( 'arconix-shortcodes', get_template_directory_uri() . '/arconix-shortcodes.css', array(), '0.9' );
+    elseif( file_exists( get_template_directory() . "/arconix-shortcodes.css" ) ) {
+	wp_enqueue_style( 'arconix-shortcodes', get_template_directory_uri() . '/arconix-shortcodes.css', array(), ASC_VERSION );
     }
     else {
-	wp_enqueue_style( 'arconix-shortcodes', plugins_url('/arconix-shortcodes.css', __FILE__), array(), '0.9' );
+	wp_enqueue_style( 'arconix-shortcodes', plugins_url( '/arconix-shortcodes.css', __FILE__ ), array(), ASC_VERSION );
     }
 }
 
@@ -92,16 +93,16 @@ function arconix_add_shortcodes() {
     add_shortcode( 'wp-link', 'arconix_wp_link_shortcode' );
 
     /* Styles */
-    add_shortcode( 'abbr', 'arconix_abbr_shortcode');
+    add_shortcode( 'abbr', 'arconix_abbr_shortcode' );
     add_shortcode( 'accordions', 'arconix_accordions_shortcode', 90 );
     add_shortcode( 'accordion', 'arconix_accordion_shortcode', 99 );
     add_shortcode( 'box', 'arconix_box_shortcode' );
     add_shortcode( 'button', 'arconix_button_shortcode' );
     add_shortcode( 'highlight', 'arconix_highlight_shortcode' );
-    add_shortcode( 'list', 'arconix_list_shortcode');
+    add_shortcode( 'list', 'arconix_list_shortcode' );
     add_shortcode( 'tabs', 'arconix_tabs_shortcode', 90 );
     add_shortcode( 'tab', 'arconix_tab_shortcode', 99 );
-    add_shortcode( 'toggle', 'arconix_toggle_shortcode');
+    add_shortcode( 'toggle', 'arconix_toggle_shortcode' );
 
     /* Content Columns */
     /* = Two Columns */
@@ -114,10 +115,10 @@ function arconix_add_shortcodes() {
     add_shortcode( 'two-fourths', 'arconix_two_fourths_shortcode' );
     add_shortcode( 'three-fourths', 'arconix_three_fourths_shortcode' );
     /* = Five Columns */
-    add_shortcode( 'one-fifth', 'arconix_one_fifth_shortcode');
-    add_shortcode( 'two-fifths', 'arconix_two_fifths_shortcode');
-    add_shortcode( 'three-fifths', 'arconix_three_fifths_shortcode');
-    add_shortcode( 'four-fifths', 'arconix_one_four_fifths_shortcode');
+    add_shortcode( 'one-fifth', 'arconix_one_fifth_shortcode' );
+    add_shortcode( 'two-fifths', 'arconix_two_fifths_shortcode' );
+    add_shortcode( 'three-fifths', 'arconix_three_fifths_shortcode' );
+    add_shortcode( 'four-fifths', 'arconix_four_fifths_shortcode' );
 
 }
 
@@ -212,6 +213,9 @@ function arconix_abbr_shortcode ( $atts, $content = null ) {
  *
  */
 function arconix_accordions_shortcode( $atts, $content = null ) {
+    global $_asc_load;
+    $_asc_load = true;
+
     /*
     Supported Attributes
 	type	=>  vertical
@@ -264,17 +268,17 @@ function arconix_accordion_shortcode( $atts, $content = null ) {
  */
 function arconix_box_shortcode( $atts, $content = null ) {
     /*
-	Supported Attributes
-	    style   =>  blue, green, grey, red, tan, yellow	-> creates boxes using only those colors
-		OR
-	    style   =>  alert, comment, download, info, tip	-> boxes with the corresponding icon to the left of the text
+    Supported Attributes
+	style   =>  blue, green, grey, red, tan, yellow	-> creates boxes using only those colors
+	    OR
+	style   =>  alert, comment, download, info, tip	-> boxes with the corresponding icon to the left of the text
     */
-	$defaults = apply_filters( 'arconix_box_shortcode_args',
-		array(
-			'style' => 'grey'
-		)
-	);
-	extract( shortcode_atts( $defaults, $atts ) );
+    $defaults = apply_filters( 'arconix_box_shortcode_args',
+	array(
+	    'style' => 'grey'
+	)
+    );
+    extract( shortcode_atts( $defaults, $atts ) );
 
     return '<p class="arconix-box arconix-box-'. $style .'">'. arconix_remove_wpautop( $content ) .'</p>';
 }
@@ -288,18 +292,18 @@ function arconix_box_shortcode( $atts, $content = null ) {
  */
 function arconix_button_shortcode( $atts, $content = null ) {
     /*
-	Supported Attributes
-	    size    =>	large, medium, small
-	    color   =>  black, blue, green, grey, orange, pink, red, white
+    Supported Attributes
+	size    =>  large, medium, small
+	color   =>  black, blue, green, grey, orange, pink, red, white
     */
-	$defaults = apply_filters( 'arconix_button_shortcode_args',
-		array(
-			'size' => 'medium',
-			'color' => 'white',
-			'url' => '#'
-		)
-	);
-	extract( shortcode_atts( $defaults, $atts ) );
+    $defaults = apply_filters( 'arconix_button_shortcode_args',
+	array(
+	    'size' => 'medium',
+	    'color' => 'white',
+	    'url' => '#'
+	)
+    );
+    extract( shortcode_atts( $defaults, $atts ) );
 
     return '<a class="arconix-button arconix-button-'. $size .' arconix-button-'. $color .'" href="'. $url .'">'. $content .'</a>';
 }
@@ -314,11 +318,12 @@ function arconix_button_shortcode( $atts, $content = null ) {
  */
 function arconix_highlight_shortcode( $atts, $content = null ) {
     /*
-	Supported Attributes
-	    color   =>  yellow
+    Supported Attributes
+	color   =>  yellow
     */
-	$defaults = apply_filters( 'arconix_highlight_shortcode_args', array( 'color' => 'yellow' ) );
-	extract( shortcode_atts( $defaults, $atts ) );
+    $defaults = apply_filters( 'arconix_highlight_shortcode_args', array( 'color' => 'yellow' ) );
+
+    extract( shortcode_atts( $defaults, $atts ) );
 
     return '<span class="arconix-highlight arconix-highlight-'. $color .'">' . do_shortcode( $content ) . '</span>';
 }
@@ -337,6 +342,7 @@ function arconix_list_shortcode( $atts, $content = null ) {
     */
 
     $defaults = apply_filters( 'arconix_list_shortcode_args', array( 'style' => 'arrow-white' ) );
+
     extract( shortcode_atts( $defaults, $atts ) );
 
     return '<div class="arconix-list arconix-list-' . $style . '">' . arconix_remove_wpautop( $content ) . '</div>';
@@ -350,6 +356,9 @@ function arconix_list_shortcode( $atts, $content = null ) {
  *
  */
 function arconix_tabs_shortcode( $atts, $content = null ) {
+    global $_asc_load;
+    $_asc_load = true;
+
     $defaults = apply_filters( 'arconix_tabs_shortcode_args',
 	array(
 	    'style' => 'horizontal',
@@ -365,11 +374,11 @@ function arconix_tabs_shortcode( $atts, $content = null ) {
     do_shortcode( $content );
 
     if (is_array($GLOBALS['tabs'])) {
-		foreach ($GLOBALS['tabs'] as $tab) {
-			$tabs[] = '<li class="arconix-tab tab-'. sanitize_title( $tab['title'] ). '"><a class="" href="#">' . $tab['title'] . '</a></li>';
-			$panes[] = '<div class="arconix-pane pane-' . sanitize_title( $tab['title'] ) .'">' . arconix_remove_wpautop( $tab['content'] ) . '</div>';
-		}
-		$return = "\n" . '<div class="arconix-tabs-'. $style . $css .'"><ul class="arconix-tabs">' . implode("\n", $tabs) . '</ul>' . "\n" . '<div class="arconix-panes">' . implode("\n", $panes) . '</div></div>' . "\n";
+	foreach ($GLOBALS['tabs'] as $tab) {
+	    $tabs[] = '<li class="arconix-tab tab-'. sanitize_title( $tab['title'] ). '"><a class="" href="#">' . $tab['title'] . '</a></li>';
+	    $panes[] = '<div class="arconix-pane pane-' . sanitize_title( $tab['title'] ) .'">' . arconix_remove_wpautop( $tab['content'] ) . '</div>';
+	}
+	$return = "\n" . '<div class="arconix-tabs-'. $style . $css .'"><ul class="arconix-tabs">' . implode("\n", $tabs) . '</ul>' . "\n" . '<div class="arconix-panes">' . implode("\n", $panes) . '</div></div>' . "\n";
     }
     return $return;
 }
@@ -382,13 +391,13 @@ function arconix_tabs_shortcode( $atts, $content = null ) {
  *
  */
 function arconix_tab_shortcode( $atts, $content = null ) {
-	$defaults = apply_filters( 'arconix_tab_shortcode_args', array( 'title' => 'Tab' ) );
-	extract( shortcode_atts( $defaults, $atts ) );
+    $defaults = apply_filters( 'arconix_tab_shortcode_args', array( 'title' => 'Tab' ) );
+    extract( shortcode_atts( $defaults, $atts ) );
 
     $x = $GLOBALS['tab_count'];
-	$GLOBALS['tabs'][$x] = array( 'title' => sprintf( $title, $GLOBALS['tab_count'] ), 'content' =>  $content );
+    $GLOBALS['tabs'][$x] = array( 'title' => sprintf( $title, $GLOBALS['tab_count'] ), 'content' =>  $content );
 
-	$GLOBALS['tab_count']++;
+    $GLOBALS['tab_count']++;
 }
 
 /**
@@ -399,6 +408,8 @@ function arconix_tab_shortcode( $atts, $content = null ) {
  * @example [toggle heading="h3" title="My Toggle Title" css="my-custom-class"]My Text to toggle[/toggle]
  */
 function arconix_toggle_shortcode( $atts, $content = null ) {
+    global $_asc_load;
+    $_asc_load = true;
 
     $defaults = apply_filters( 'arconix_toggle_shortcode_args',
 	array(

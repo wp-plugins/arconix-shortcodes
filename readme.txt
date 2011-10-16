@@ -12,7 +12,7 @@ Arconix Shortcodes provides a number of useful design elements to compliment any
 With this plugin you can easily add various kinds of boxes, buttons, tabs, accordions, unordered lists and more. Choose from the supplied options or add your own with a little CSS.
 
 = Features =
-* 8 style shortcodes (boxes, tabs, toggles, etc...)
+* 8 style shortcodes (accordions, boxes, tabs, toggles, etc...)
 * 5 utility shortcodes (login-logout, google-map, etc...)
 * Support for up to 5 columns
 
@@ -31,10 +31,12 @@ Upgrade normally via your Wordpress admin -> Plugins panel.
 = Where can I find more information on how to use the shortcodes  =
 
 Visit the plugin's [Wiki Page](http://arcnx.co/aswiki "Arconix Shortcodes Wiki")
+Tutorials on advanced usage can also be found at [Arconix Computers](http://arconixpc.com/tag/arconix-shortcodes)
 
 = I have a problem or a bug =
 
 Check out the WordPress [support forum](http://wordpress.org/tags/arconix-shortcodes?forum_id=10)
+Send an e-mail to [cases@arconixpc.fogbugz.com] (mailto:cases@arconixpc.com)
 
 = Can you add this shortcode or that option? =
 
