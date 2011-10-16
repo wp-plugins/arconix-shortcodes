@@ -28,7 +28,7 @@ Upgrade normally via your Wordpress admin -> Plugins panel.
 
 == Frequently Asked Questions ==
 
-= Where can I find more information on how to use the shortcodes  =
+= Where can I find more information on how to use the shortcodes?  =
 
 Visit the plugin's [Wiki Page](http://arcnx.co/aswiki "Arconix Shortcodes Wiki")
 Tutorials on advanced usage can also be found at [Arconix Computers](http://arconixpc.com/tag/arconix-shortcodes)
@@ -36,7 +36,7 @@ Tutorials on advanced usage can also be found at [Arconix Computers](http://arco
 = I have a problem or a bug =
 
 Check out the WordPress [support forum](http://wordpress.org/tags/arconix-shortcodes?forum_id=10)
-Send an e-mail to [cases@arconixpc.fogbugz.com] (mailto:cases@arconixpc.com)
+Send an e-mail to [cases@arconixpc.fogbugz.com] (mailto:cases@arconixpc.fogbugz.com)
 
 = Can you add this shortcode or that option? =
 
@@ -49,6 +49,10 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 4. Unordered list styles
 
 == Changelog ==
+
+= 0.9.2 =
+* Load the javascript only a shortcode requires it
+* Fix a typo in the four_fiths column
 
 = 0.9.1 =
 * Added a load attribute to the accordions shortcode. This attribute allows the user to define which accordion is open by default when the page loads. The default is 1 and will load with the 1st accordion visible, but supports 0 (all accordions load closed) through 5 (the 5th accordion is open on load).
