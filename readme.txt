@@ -36,7 +36,7 @@ Tutorials on advanced usage can also be found at [Arconix Computers](http://arco
 = I have a problem or a bug =
 
 Check out the WordPress [support forum](http://wordpress.org/tags/arconix-shortcodes?forum_id=10)
-Send an e-mail to [cases@arconixpc.fogbugz.com] (mailto:cases@arconixpc.fogbugz.com)
+Send an e-mail to cases@arconixpc.fogbugz.com
 
 = Can you add this shortcode or that option? =
 
@@ -51,7 +51,7 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 == Changelog ==
 
 = 0.9.2 =
-* Load the javascript only a shortcode requires it
+* Load the javascript only if a shortcode requires it
 * Fix a typo in the four_fiths column
 
 = 0.9.1 =
