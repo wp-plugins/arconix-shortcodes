@@ -36,7 +36,7 @@ Upgrade normally via your Wordpress admin -> Plugins panel.
 = I have a problem or a bug =
 
 * Check out the WordPress [support forum](http://wordpress.org/tags/arconix-shortcodes?forum_id=10)
-* Send an e-mail to cases@arconixpc.fogbugz.com
+* Contact me through my website: [Arconix Computers](http://arcnx.co/1)
 
 = Can you add this shortcode or that option? =
 
