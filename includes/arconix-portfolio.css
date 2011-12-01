@@ -1,0 +1,47 @@
+.arconix-portfolio-list {
+    list-style-type: none;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.arconix-portfolio-list-item {
+    float: left;
+    margin-right: 1.5% !important;
+    margin-bottom: 15px !important;
+    padding-bottom: 0 !important;
+    width: 275px;
+}
+
+.arconix-portfolio-excerpt p,
+.arconix-portfolio-content p {
+    margin-bottom: 0 !important;
+}
+
+.arconix-portfolio-tax-list {
+    font-size: 11px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* Twenty-Eleven styling */
+.twenty-eleven .arconix-portfolio-excerpt p,
+.twenty-eleven .arconix-portfolio-content p {
+    border-top: 1px solid #DDDDDD;
+    padding-top: 3px;
+}
+.twenty-eleven h3.arconix-portfolio-title {
+    font-size: 16px !important;
+    margin-bottom: 0 !important;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.twenty-eleven .attachment-portfolio-thumb {
+    border: 1px solid #ddd;
+    padding: 3px;
+}
+
+/* Twenty-Ten styling */
+.twenty-ten h3.arconix-portfolio-title {
+    margin-bottom: 0 !important;
+}
