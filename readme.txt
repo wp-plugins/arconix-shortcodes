@@ -30,7 +30,7 @@ Upgrade normally via your Wordpress admin -> Plugins panel.
 
 = How do I display my created portfolio items =
 
-* Create a WordPress Page and use the `[portfolio]` shortcode. See the [Documentation](http://http;//arcnx.co/apwiki "Arconix Portfolio Wiki") for more details and available options
+* Create a WordPress Page and use the `[portfolio]` shortcode. See the [Documentation](http://arcnx.co/apwiki "Arconix Portfolio Wiki") for more details and available options
 
 = Where can I find more information on how to use the plugin?  =
 
