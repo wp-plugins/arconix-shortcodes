@@ -50,6 +50,9 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 
 == Changelog ==
 
+= 0.9.3 =
+* update the jquery-tools script to the latest v1.2.6
+
 = 0.9.2 =
 * Only load the javascript if a shortcode requires it to function
 * Fix a typo in the four_fiths column function

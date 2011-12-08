@@ -4,7 +4,7 @@
  * Plugin URI: http://arconixpc.com/plugins/arconix-shortcodes
  * Description: A handy collection of shortcodes for your site.
  *
- * Version: 0.9.2
+ * Version: 0.9.3
  *
  * Author: John Gardner
  * Author URI: http://johngardner.co/
@@ -30,9 +30,9 @@ function arconix_remove_wpautop( $content ) {
 add_action( 'init', 'arconix_shortcode_init' );
 function arconix_shortcode_init() {
 
-    define( 'ASC_VERSION', '0.9.2' );
+    define( 'ASC_VERSION', '0.9.3' );
 
-    wp_register_script( 'jquery-tools', 'http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js', array(), '1.2.5', true );
+    wp_register_script( 'jquery-tools', 'http://cdn.jquerytools.org/1.2.6/jquery.tools.min.js', array(), '1.2.6', true );
 
     if( file_exists( get_stylesheet_directory() . "/arconix-shortcodes.js" ) ) {
 	wp_register_script( 'arconix-shortcode-js', get_stylesheet_directory_uri() . '/arconix-shortcodes.js', array( 'jquery-tools'), ASC_VERSION, true );
