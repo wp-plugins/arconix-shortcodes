@@ -4,7 +4,7 @@
  * Plugin URI: http://arconixpc.com/plugins/arconix-shortcodes
  * Description: A handy collection of shortcodes for your site.
  *
- * Version: 0.9.4
+ * Version: 0.9.5
  *
  * Author: John Gardner
  * Author URI: http://johngardner.co/
@@ -30,9 +30,9 @@ function arconix_remove_wpautop( $content ) {
 add_action( 'init', 'arconix_shortcode_init' );
 function arconix_shortcode_init() {
 
-    define( 'ASC_VERSION', '0.9.4' );
+    define( 'ASC_VERSION', '0.9.5' );
 
-    wp_register_script( 'jquery-tools', 'http://cdn.jquerytools.org/1.2.6/full/jquery.tools.min.js', array(), '1.2.6', true );
+    wp_register_script( 'jquery-tools', 'http://cdn.jquerytools.org/1.2.6/tiny/jquery.tools.min.js', array( 'jquery' ), '1.2.6', true );
 
     if( file_exists( get_stylesheet_directory() . "/arconix-shortcodes.js" ) ) {
 	wp_register_script( 'arconix-shortcode-js', get_stylesheet_directory_uri() . '/arconix-shortcodes.js', array( 'jquery-tools'), ASC_VERSION, true );
@@ -41,7 +41,7 @@ function arconix_shortcode_init() {
 	wp_register_script( 'arconix-shortcode-js', get_template_directory_uri() . '/arconix-shortcodes.js', array('jquery-tools'), ASC_VERSION, true );
     }
     else {
-	wp_register_script( 'arconix-shortcode-js', plugins_url('arconix-shortcodes.js', __FILE__), array('jquery-tools'), ASC_VERSION, true );
+	wp_register_script( 'arconix-shortcode-js', plugins_url('arconix-shortcodes.js', __FILE__), array( 'jquery-tools' ), ASC_VERSION, true );
     }
 }
 

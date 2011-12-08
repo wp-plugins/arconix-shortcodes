@@ -50,6 +50,9 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 
 == Changelog ==
 
+= 0.9.5 =
+* Maybe one of these days I'll get this right. Thanks to @gasie for setting me straight. This plugin is now loading jquery-tools without the a bundled jQuery. As such, I've added a jQuery dependency to my script registration which will load the WordPress supplied version. All of that simply means jQuery conflicts with other properly-coded plugins should be a thing of the past.
+
 = 0.9.4 =
 * accidently supplied the wrong version of jquery-tools script
 
