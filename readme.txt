@@ -2,14 +2,14 @@
 Contributors: jgardner03
 Tags: arconix, shortcodes, tabs, toggle, buttons, accordion
 Requires at least: 2.5
-Tested up to: 3.2.1
+Tested up to: 3.3.1
 Stable tag: trunk
 
 Arconix Shortcodes provides a number of useful design elements to compliment any website.
 
 == Description ==
 
-With this plugin you can easily add various kinds of boxes, buttons, tabs, accordions, unordered lists and more. Choose from the supplied options or add your own with a little CSS.
+With this plugin you can easily add various kinds of styled boxes, buttons, tabs, accordions, unordered lists and more. Choose from the supplied options or add your own with a little CSS.
 
 = Features =
 * 8 style shortcodes (accordions, boxes, tabs, toggles, etc...)
@@ -36,7 +36,6 @@ Upgrade normally via your Wordpress admin -> Plugins panel.
 = I have a problem or a bug =
 
 * Check out the WordPress [support forum](http://wordpress.org/tags/arconix-shortcodes?forum_id=10)
-* Contact me through my website: [Arconix Computers](http://arcnx.co/1)
 
 = Can you add this shortcode or that option? =
 
@@ -49,6 +48,13 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 4. Unordered list styles
 
 == Changelog ==
+
+= 1.0 =
+* Completely re-written codebase
+* Added ability to link to a specific tab through the use of anchor links. Read the documentation for more information on how to set those up
+* Added an open and closed state image for the accordions
+* Changed the toggle heading to a div due to css specificity conflicts when using heading tags
+* Added a dashboard widget which includes links to plugin related blog posts on arconixpc.com as well links to the wiki page and WordPress support forum
 
 = 0.9.5 =
 * Maybe one of these days I'll get this right. Thanks to @gasie for setting me straight. This plugin is now loading jquery-tools without the a bundled jQuery. As such, I've added a jQuery dependency to my script registration which will load the WordPress supplied version. All of that simply means jQuery conflicts with other properly-coded plugins should be a thing of the past.
