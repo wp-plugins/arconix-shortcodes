@@ -287,7 +287,7 @@ class Arconix_Shortcodes {
 	);
 	extract( shortcode_atts( $defaults, $atts ) );
         
-        if( $load = "none" ) $load = 0 ; // for backwards compatibility
+        if( $load == "none" ) $load = 0 ; // for backwards compatibility
 
 	if ( $css != '' ) { $css = ' ' . $css; }
 

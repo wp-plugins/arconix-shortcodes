@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: jgardner03
 Tags: arconix, shortcodes, tabs, toggle, buttons, accordion
-Requires at least: 2.5
+Requires at least: 3.1
 Tested up to: 3.3.1
 Stable tag: trunk
 
@@ -48,6 +48,11 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 4. Unordered list styles
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed a style bug regarding the alignment of bullet points
+* Fixed a style bug regarding the padding and margin of tab titles
+* Fixed a bug which was preventing the accordions from loading properly
 
 = 1.0 =
 * Completely re-written codebase
