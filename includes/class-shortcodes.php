@@ -268,7 +268,7 @@ class Arconix_Shortcodes {
      * @return type
      *
      * @since 0.9
-     * @version 1.0
+     * @version 1.0.1
      */
     function accordions_shortcode( $atts, $content = null ) {
 	self::$load_js = true;
