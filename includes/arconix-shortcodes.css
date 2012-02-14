@@ -398,17 +398,17 @@
     padding: 0 0 0 24px !important;
 }
 
-.arconix-list-arrow-black ul li { background: url("../images/arrow-black.png") no-repeat left center; }
-.arconix-list-arrow-blue ul li { background: url("../images/arrow-blue.png") no-repeat left center; }
-.arconix-list-arrow-green ul li { background: url("../images/arrow-green.png") no-repeat left center; }
-.arconix-list-arrow-grey ul li { background: url("../images/arrow-grey.png") no-repeat left center; }
-.arconix-list-arrow-orange ul li { background: url("../images/arrow-orange.png") no-repeat left center; }
-.arconix-list-arrow-pink ul li { background: url("../images/arrow-pink.png") no-repeat left center; }
-.arconix-list-arrow-red ul li { background: url("../images/arrow-red.png") no-repeat left center; }
-.arconix-list-arrow-white ul li { background: url("../images/arrow-white.png") no-repeat left center; }
-.arconix-list-check ul li { background: url("../images/check.png") no-repeat left center; }
-.arconix-list-close ul li { background: url("../images/close.png") no-repeat left center; }
-.arconix-list-star ul li { background: url("../images/star.png") no-repeat left center; }
+.arconix-list-arrow-black ul li { background: url("../images/arrow-black.png") no-repeat 0 6px; }
+.arconix-list-arrow-blue ul li { background: url("../images/arrow-blue.png") no-repeat 0 6px; }
+.arconix-list-arrow-green ul li { background: url("../images/arrow-green.png") no-repeat 0 6px; }
+.arconix-list-arrow-grey ul li { background: url("../images/arrow-grey.png") no-repeat 0 6px; }
+.arconix-list-arrow-orange ul li { background: url("../images/arrow-orange.png") no-repeat 0 6px; }
+.arconix-list-arrow-pink ul li { background: url("../images/arrow-pink.png") no-repeat 0 6px; }
+.arconix-list-arrow-red ul li { background: url("../images/arrow-red.png") no-repeat 0 6px; }
+.arconix-list-arrow-white ul li { background: url("../images/arrow-white.png") no-repeat 0 6px; }
+.arconix-list-check ul li { background: url("../images/check.png") no-repeat 0 6px; }
+.arconix-list-close ul li { background: url("../images/close.png") no-repeat 0 6px; }
+.arconix-list-star ul li { background: url("../images/star.png") no-repeat 0 6px; }
 
 
 /* Tabs Styling
@@ -433,7 +433,7 @@
     text-indent: 0;
     padding: 0;
     margin: 0;
-    margin-right: 3px;
+    margin-right: 5px;
     list-style-image: none !important;
     position: relative;
     top: -1px;
@@ -455,11 +455,11 @@
     height: 30px;
     line-height: 30px;
     margin: 0;
-    padding: 0;
+    padding: 0 10px;
     position: relative;
     text-align: center;
     text-decoration: none;
-    min-width: 130px;
+    min-width: 80px;
     width: auto;
 }
 

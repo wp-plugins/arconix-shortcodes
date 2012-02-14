@@ -49,6 +49,9 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 
 == Changelog ==
 
+= 1.0.2 =
+* Added 'target' and 'rel' attribute support for button links
+
 = 1.0.1 =
 * Fixed a style bug regarding the alignment of bullet points
 * Fixed a style bug regarding the padding and margin of tab titles

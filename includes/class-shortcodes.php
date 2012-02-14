@@ -355,24 +355,41 @@ class Arconix_Shortcodes {
      * @return type
      *
      * @since 0.9
-     * @example [button size="small" color="red"]My Button Text[/button]
+     * @version 1.0.2
      */
     function button_shortcode( $atts, $content = null ) {
 	/*
 	Supported Attributes
 	    size    =>  large, medium, small
 	    color   =>  black, blue, green, grey, orange, pink, red, white
+            target  =>  _self, _blank
 	*/
 	$defaults = apply_filters( 'arconix_button_shortcode_args',
 	    array(
 		'size' => 'medium',
 		'color' => 'white',
-		'url' => '#'
+		'url' => '#',
+                'target' => '_self',
+                'rel' => ''
 	    )
 	);
 	extract( shortcode_atts( $defaults, $atts ) );
+        
+        switch ( $target ) {
+            case "_blank":
+            case "blank":
+                $target = "_blank";
+                break;
+            case "_self":
+            case "self":
+            default:
+                $target = "_self";
+                break;
+        }
+        
+        if( $rel ) $rel = ' rel="' . $rel . '"';
 
-	return '<a class="arconix-button arconix-button-'. $size .' arconix-button-'. $color .'" href="'. $url .'">'. $content .'</a>';
+	return '<a target="' . $target . '" class="arconix-button arconix-button-'. $size .' arconix-button-'. $color .'" href="'. $url .'"' . $rel . '>'. $content .'</a>';
     }
 
     /**
