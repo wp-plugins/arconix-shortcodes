@@ -65,15 +65,15 @@
 /* Box Styling
 ------------------------------------------------------------ */
 .arconix-box {
-    border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+        border-radius: 5px;
     border: 1px solid;
     clear: both;
     margin: 15px 0;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 0 #FFFFFF inset, 0 -1px 0 #FFFFFF inset;
-        -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 0 #FFFFFF inset, 0 -1px 0 #FFFFFF inset;
-        -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 0 #FFFFFF inset, 0 -1px 0 #FFFFFF inset;
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 0 #FFFFFF inset, 0 -1px 0 #FFFFFF inset;
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 0 #FFFFFF inset, 0 -1px 0 #FFFFFF inset;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 0 #FFFFFF inset, 0 -1px 0 #FFFFFF inset;
 }
 
 .arconix-box-blue,
@@ -152,19 +152,20 @@
 /* Button Styling
 ------------------------------------------------------------ */
 .arconix-button {
-    cursor: pointer;
-    border-radius: 8px;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    color: #fff;
+    cursor: pointer;    
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+        border-radius: 8px;    
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
     display: inline-block;
     margin-bottom: 10px;
     outline: none;
     text-align: center;
     text-decoration: none;
-    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.4);
 }
 
 .arconix-button:hover { text-decoration: none; }
@@ -196,7 +197,6 @@
 /* Black
 ------------------------------------------------------------ */
 .arconix-button-black {
-    color: #d7d7d7 !important;
     border: solid 1px #333;
     background: #333;
     background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#000));
@@ -219,7 +219,6 @@
 /* Blue
 ------------------------------------------------------------ */
 .arconix-button-blue {
-    color: #d9eef7 !important;
     border: solid 1px #0076a3;
     background: #0095cd;
     background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
@@ -242,7 +241,6 @@
 /* Green
 ------------------------------------------------------------ */
 .arconix-button-green {
-    color: #e8f0de !important;
     border: solid 1px #538312;
     background: #64991e;
     background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
@@ -266,7 +264,6 @@
 ------------------------------------------------------------ */
 .arconix-button-grey,
 .arconix-button-gray {
-    color: #e9e9e9 !important;
     border: solid 1px #555;
     background: #6e6e6e;
     background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#575757));
@@ -291,7 +288,6 @@
 /* Orange
 ------------------------------------------------------------ */
 .arconix-button-orange {
-    color: #fef4e9 !important;
     border: solid 1px #da7c0c;
     background: #f78d1d;
     background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
@@ -314,7 +310,6 @@
 /* Pink
 ------------------------------------------------------------ */
 .arconix-button-pink {
-    color: #feeef5 !important;
     border: solid 1px #d2729e;
     background: #f895c2;
     background: -webkit-gradient(linear, left top, left bottom, from(#feb1d3), to(#f171ab));
@@ -337,7 +332,6 @@
 /* Red
 ------------------------------------------------------------ */
 .arconix-button-red {
-    color: #faddde !important;
     border: solid 1px #980c10;
     background: #d81b21;
     background: -webkit-gradient(linear, left top, left bottom, from(#ed1c24), to(#aa1317));
@@ -390,25 +384,25 @@
 ------------------------------------------------------------ */
 .arconix-list ul {
     list-style: none;
-    padding: 0 0 0 12px !important;
+    margin: 0 0 10px 25px !important;
 }
 
 .arconix-list ul li {
     margin-top: 5px;
-    padding: 0 0 0 24px !important;
+    padding: 0 0 0 20px;
 }
 
-.arconix-list-arrow-black ul li { background: url("../images/arrow-black.png") no-repeat 0 6px; }
-.arconix-list-arrow-blue ul li { background: url("../images/arrow-blue.png") no-repeat 0 6px; }
-.arconix-list-arrow-green ul li { background: url("../images/arrow-green.png") no-repeat 0 6px; }
-.arconix-list-arrow-grey ul li { background: url("../images/arrow-grey.png") no-repeat 0 6px; }
-.arconix-list-arrow-orange ul li { background: url("../images/arrow-orange.png") no-repeat 0 6px; }
-.arconix-list-arrow-pink ul li { background: url("../images/arrow-pink.png") no-repeat 0 6px; }
-.arconix-list-arrow-red ul li { background: url("../images/arrow-red.png") no-repeat 0 6px; }
-.arconix-list-arrow-white ul li { background: url("../images/arrow-white.png") no-repeat 0 6px; }
-.arconix-list-check ul li { background: url("../images/check.png") no-repeat 0 6px; }
-.arconix-list-close ul li { background: url("../images/close.png") no-repeat 0 6px; }
-.arconix-list-star ul li { background: url("../images/star.png") no-repeat 0 6px; }
+.arconix-list-arrow-black ul li {  background: url(../images/arrow-black.png) no-repeat 0 6px; }
+.arconix-list-arrow-blue ul li { background: url(../images/arrow-blue.png) no-repeat 0 6px }
+.arconix-list-arrow-green ul li { background: url(../images/arrow-green.png) no-repeat 0 6px;  }
+.arconix-list-arrow-grey ul li { background: url(../images/arrow-grey.png) no-repeat scroll 0 6px;  }
+.arconix-list-arrow-orange ul li { background: url(../images/arrow-orange.png) no-repeat  0 6px;  }
+.arconix-list-arrow-pink ul li { background: url(../images/arrow-pink.png) no-repeat  0 6px;  }
+.arconix-list-arrow-red ul li { background: url(../images/arrow-red.png) no-repeat 0 6px; }
+.arconix-list-arrow-white ul li { background: url(../images/arrow-white.png) no-repeat 0 6px; }
+.arconix-list-check ul li { background: url(../images/check.png) no-repeat 0 6px; }
+.arconix-list-close ul li { background: url(../images/close.png) no-repeat 0 6px; }
+.arconix-list-star ul li { background: url(../images/star.png) no-repeat 0 6px; }
 
 
 /* Tabs Styling
@@ -420,7 +414,7 @@
 
 /* Tabs  */
 .arconix-tabs-horizontal ul.arconix-tabs {
-    list-style: none;
+    list-style: none !important;
     margin: 0 !important;
     padding: 0;
     border-bottom: 1px solid #ddd;
@@ -434,20 +428,19 @@
     padding: 0;
     margin: 0;
     margin-right: 5px;
-    list-style-image: none !important;
     position: relative;
     top: -1px;
 }
 
 /* Indivdual Tab link Text */
 .arconix-tabs-horizontal ul.arconix-tabs a {
-    background-color: #eee;
-    border-top-left-radius: 5px;
-	-moz-border-radius-topleft: 5px;
-        -webkit-border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-	-moz-border-radius-topright: 5px;
-	-webkit-border-top-right-radius: 5px;
+    background-color: #eee;    
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-top-left-radius: 5px;
+        border-top-left-radius: 5px;    
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-right-radius: 5px;
+        border-top-right-radius: 5px;
     border: 1px solid #ccc;
     color: #333;
     display: block;
@@ -480,19 +473,24 @@
 
 /* Panes */
 .arconix-tabs-horizontal .arconix-panes {
-	background-color: #fbfbfb;
-	border: 1px solid #ccc;
-	border-top: none;
+    background-color: #fbfbfb;
+    border: 1px solid #ccc;
+    border-top: none;
+    clear: both;
+    overflow: hidden;
+    padding-bottom: 15px;
+    position: relative;
+    top: -1px;
 }
 
-.arconix-tabs-horizontal .arconix-pane { padding: 20px 15px 10px; }
+.arconix-tabs-horizontal .arconix-pane { padding: 20px 15px 0; }
 
 /* Toggle Styling
 ------------------------------------------------------------ */
-.arconix-toggle-wrap {
-    border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+.arconix-toggle-wrap {    
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+        border-radius: 5px;
     background:	none repeat scroll 0 0 #fbfbfb;
     clear: both;
     border: 1px solid #ddd;

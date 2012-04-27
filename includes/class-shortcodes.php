@@ -32,7 +32,7 @@ class Arconix_Shortcodes {
      */
     function register_script() {
 
-        wp_register_script( 'jquery-tools', 'http://cdn.jquerytools.org/1.2.6/tiny/jquery.tools.min.js', array( 'jquery' ), '1.2.6', true );
+        wp_register_script( 'jquery-tools', 'http://cdn.jquerytools.org/1.2.7/tiny/jquery.tools.min.js', array( 'jquery' ), '1.2.7', true );
 
 	if( file_exists( get_stylesheet_directory() . "/arconix-shortcodes.js" ) ) {
 	    wp_register_script( 'arconix-shortcodes-js', get_stylesheet_directory_uri() . '/arconix-shortcodes.js', array( 'jquery-tools' ), ACS_VERSION, true );
@@ -41,10 +41,10 @@ class Arconix_Shortcodes {
 	    wp_register_script( 'arconix-shortcodes-js', get_template_directory_uri() . '/arconix-shortcodes.js', array( 'jquery-tools' ), ACS_VERSION, true );
 	}
 	else {
-            wp_register_script( 'arconix-shortcodes-js', ACS_URL . 'includes/arconix-shortcodes.js', array( 'jquery-tools' ), ACS_VERSION, true );
+            wp_register_script( 'arconix-shortcodes-js', ACS_URL . 'includes/shortcodes.js', array( 'jquery-tools' ), ACS_VERSION, true );
 	}
     }
-    
+
     /**
      * This var is used in the shortcode to flag the loading of javascript
      * @var type boolean
@@ -80,7 +80,7 @@ class Arconix_Shortcodes {
 	    wp_enqueue_style( 'arconix-shortcodes', get_template_directory_uri() . '/arconix-shortcodes.css', array(), ACS_VERSION );
 	}
 	else {
-            wp_enqueue_style( 'arconix-shortcodes', ACS_URL . 'includes/arconix-shortcodes.css', array(), ACS_VERSION );
+            wp_enqueue_style( 'arconix-shortcodes', ACS_URL . 'includes/shortcodes.css', array(), ACS_VERSION );
 	}
     }
 
@@ -114,8 +114,8 @@ class Arconix_Shortcodes {
 
         <div class="acs-widget-bottom">
             <ul>
-                <li><img src="<?php echo ACS_URL . 'images/admin/page_16.png'?>"><a href="http://arcnx.co/aswiki">Wiki Page</a></li>
-                <li><img src="<?php echo ACS_URL . 'images/admin/help_16.png'?>"><a href="http://wordpress.org/tags/arconix-shortcodes?forum_id=10">Support Forum</a></li>
+                <li><img src="<?php echo ACS_URL . 'images/admin/page-16x16.png'?>"><a href="http://arcnx.co/aswiki">Wiki Page</a></li>
+                <li><img src="<?php echo ACS_URL . 'images/admin/help-16x16.png'?>"><a href="http://arcnx.co/ashelp">Support Forum</a></li>
             </ul>
         </div></div>
 
@@ -125,7 +125,7 @@ class Arconix_Shortcodes {
             #ac-shortcodes .acs-widget-bottom { border-top: 1px solid #ddd; padding-top: 10px; text-align: center; }
             #ac-shortcodes .acs-widget-bottom ul { list-style: none; }
             #ac-shortcodes .acs-widget-bottom ul li { display: inline; padding-right: 9%; }
-            #ac-shortcodes .acs-widget-bottom img { padding-right: 3px; vertical-align: middle; }
+            #ac-shortcodes .acs-widget-bottom img { padding-right: 3px; vertical-align: top; }
         </style>';
     }
 
@@ -214,7 +214,7 @@ class Arconix_Shortcodes {
 	);
 	extract( shortcode_atts( $defaults, $atts ) );
 
-	return '<iframe width="'.$w.'" height="'.$h.'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="'.$url.'&amp;return=embed"></iframe>';
+	return '<iframe width="' . $w . '" height="' . $h . '" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="' . $url . '&amp;output=embed"></iframe>';
     }
 
     /**
@@ -286,7 +286,7 @@ class Arconix_Shortcodes {
 	    )
 	);
 	extract( shortcode_atts( $defaults, $atts ) );
-        
+
         if( $load == "none" ) $load = 0 ; // for backwards compatibility
 
 	if ( $css != '' ) { $css = ' ' . $css; }
@@ -374,7 +374,7 @@ class Arconix_Shortcodes {
 	    )
 	);
 	extract( shortcode_atts( $defaults, $atts ) );
-        
+
         switch ( $target ) {
             case "_blank":
             case "blank":
@@ -386,7 +386,7 @@ class Arconix_Shortcodes {
                 $target = "_self";
                 break;
         }
-        
+
         if( $rel ) $rel = ' rel="' . $rel . '"';
 
 	return '<a target="' . $target . '" class="arconix-button arconix-button-'. $size .' arconix-button-'. $color .'" href="'. $url .'"' . $rel . '>'. $content .'</a>';
@@ -445,13 +445,13 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
-     * @version 1.0
+     * @version 1.0.3
      */
     function tabs_shortcode( $atts, $content = null ) {
         /*
 	Supported Attributes
 	    style   =>  horizontal
-            id      =>  name, number          
+            id      =>  name, number
          */
 	self::$load_js = true;
 
@@ -473,7 +473,7 @@ class Arconix_Shortcodes {
 
 	if( is_array($GLOBALS['tabs'] ) ) {
 	    foreach ($GLOBALS['tabs'] as $tab) {
-                
+
                 // set up tabid based on the id defined above
                 switch( $id ) {
                     case "name":
@@ -485,12 +485,17 @@ class Arconix_Shortcodes {
                     default:
                         break;
                 }
-                
+
 		$tabs[] = '<li class="arconix-tab tab-'. sanitize_title( $tab['title'] ). '"><a class="" href="#tab-' . $tabid . '">' . $tab['title'] . '</a></li>';
 		$panes[] = '<div class="arconix-pane pane-' . sanitize_title( $tab['title'] ) .'">' . self::remove_wpautop( $tab['content'] ) . '</div>';
 	    }
 	    $return = "\n" . '<div class="arconix-tabs-'. $style . $css .'"><ul class="arconix-tabs">' . implode("\n", $tabs) . '</ul>' . "\n" . '<div class="arconix-panes">' . implode("\n", $panes) . '</div></div>' . "\n";
 	}
+
+	/** Reset the variables in the event we use multiple tabs on single page*/
+	$GLOBALS['tabs'] = '';
+	$GLOBALS['tab_count'] = 0;
+
 	return $return;
     }
 

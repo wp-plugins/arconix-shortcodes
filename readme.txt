@@ -3,7 +3,7 @@ Contributors: jgardner03
 Tags: arconix, shortcodes, tabs, toggle, buttons, accordion
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: trunk
+Stable tag: 1.0.3
 
 Arconix Shortcodes provides a number of useful design elements to compliment any website.
 
@@ -35,7 +35,7 @@ Upgrade normally via your Wordpress admin -> Plugins panel.
 
 = I have a problem or a bug =
 
-* Check out the WordPress [support forum](http://wordpress.org/tags/arconix-shortcodes?forum_id=10)
+* Check out the WordPress [support forum](http://arcnx.co/ashelp)
 
 = Can you add this shortcode or that option? =
 
@@ -48,6 +48,12 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 4. Unordered list styles
 
 == Changelog ==
+
+= 1.0.3 - 2012.04.26
+* Fixed a bug in the output script for the Google Map shortcode
+* Tabs in prior tab groups will no longer show up in subsequent tab groups on the same page
+* A floated image in a tab will now stay in its tab container properly 
+* Updated to v1.2.7 of the jQuery Tools library
 
 = 1.0.2 =
 * Added 'target' and 'rel' attribute support for button links
