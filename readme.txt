@@ -49,7 +49,7 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 
 == Changelog ==
 
-= 1.0.3 - 2012.04.26
+= 1.0.3 - 2012.04.26 =
 * Fixed a bug in the output script for the Google Map shortcode
 * Tabs in prior tab groups will no longer show up in subsequent tab groups on the same page
 * A floated image in a tab will now stay in its tab container properly 
