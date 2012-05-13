@@ -28,7 +28,7 @@ class Arconix_Shortcodes {
      * placing it in the root of your theme's folder
      *
      * @since 0.9
-     * @version 0.9.5
+     * @version 1.0.3
      */
     function register_script() {
 
@@ -314,8 +314,8 @@ class Arconix_Shortcodes {
 
 	if ( $last != '' ) { $last = ' arconix-accordion-last'; }
 
-	$return = '<div class="arconix-accordion-title accordion-'. sanitize_title( $title ) . $last . '><a href="#">' . $title .'</a></div>';
-	$return .= '<div class="arconix-accordion-content'. $last . '">'. self::remove_wpautop( $content ) . '</div>';
+	$return = '<div class="arconix-accordion-title accordion-' . sanitize_title( $title ) . $last . '">' . $title . '</div>';
+	$return .= '<div class="arconix-accordion-content' . $last . '">' . self::remove_wpautop( $content ) . '</div>';
 
 	return $return;
     }
@@ -344,7 +344,7 @@ class Arconix_Shortcodes {
 	);
 	extract( shortcode_atts( $defaults, $atts ) );
 
-	return '<p class="arconix-box arconix-box-'. $style .'">'. self::remove_wpautop( $content ) .'</p>';
+	return '<div class="arconix-box arconix-box-'. $style .'">'. self::remove_wpautop( $content ) .'</div>';
     }
 
     /**
@@ -555,6 +555,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function one_half_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -562,6 +563,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-one-half'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -574,6 +578,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function one_third_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -581,6 +586,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-one-third'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -593,6 +601,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function two_thirds_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -600,6 +609,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-two-thirds'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -612,6 +624,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function one_fourth_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -619,6 +632,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-one-fourth'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -631,6 +647,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function two_fourths_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -638,6 +655,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-two-fourths'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -650,6 +670,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function three_fourths_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -657,6 +678,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-three-fourths'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -669,6 +693,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function one_fifth_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -676,6 +701,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-one-fifth'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -688,6 +716,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function two_fifths_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -695,6 +724,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-two-fifths'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -707,6 +739,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
+     * @version 1.0.4
      */
     function three_fifths_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -714,6 +747,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-three-fifths'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -726,7 +762,7 @@ class Arconix_Shortcodes {
      * @return string
      *
      * @since 0.9
-     * @version 0.9.2
+     * @version 1.0.4
      */
     function four_fifths_shortcode( $atts, $content ) {
 	extract( shortcode_atts( array( 'last' => '' ), $atts ) );
@@ -734,6 +770,9 @@ class Arconix_Shortcodes {
 	if ( $last != '' ) { $last = ' arconix-column-last'; }
 
 	$return = '<div class="arconix-column-four-fifths'. $last .'">'. self::remove_wpautop( $content ) . '</div>';
+
+	$float = self::clearfloat( $last );
+	$return .= $float;
 
 	return $return;
     }
@@ -744,11 +783,35 @@ class Arconix_Shortcodes {
      *  Helper Functions
      ******************************************************/
 
-    /* Remove the wpautop from shortcodes */
+    /**
+     * Remove automatic <p></p> and <br /> tags from content
+     *
+     * @param type $content
+     * @return string
+     *
+     * @since 0.9
+     */
     function remove_wpautop( $content ) {
 	$content = do_shortcode( shortcode_unautop( $content ) );
 	$content = preg_replace( '#^<\/p>|^<br \/>|<p>$#', '', $content );
 	return $content;
     }
+
+    /**
+     * Properly clear our floats after the columns
+     *
+     * @param string $last
+     * @return string
+     *
+     * @since 1.0.4
+     */
+    function clearfloat( $last ) {
+	$return = '';
+
+	if( $last ) $return = '<div style="clear:both;"></div>';
+
+	return $return;
+    }
+
 }
 ?>

@@ -153,10 +153,10 @@
 ------------------------------------------------------------ */
 .arconix-button {
     color: #fff;
-    cursor: pointer;    
+    cursor: pointer;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
-        border-radius: 8px;    
+        border-radius: 8px;
     -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
         box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
@@ -410,7 +410,10 @@
 
 /* Tabs - Horizontal
 ------------------------------------------------------------ */
-.arconix-tabs-horizontal { margin-bottom: 25px; }
+.arconix-tabs-horizontal {
+    clear: both;
+    margin-bottom: 25px;
+}
 
 /* Tabs  */
 .arconix-tabs-horizontal ul.arconix-tabs {
@@ -434,10 +437,10 @@
 
 /* Indivdual Tab link Text */
 .arconix-tabs-horizontal ul.arconix-tabs a {
-    background-color: #eee;    
+    background-color: #eee;
     -moz-border-radius-topleft: 5px;
     -webkit-border-top-left-radius: 5px;
-        border-top-left-radius: 5px;    
+        border-top-left-radius: 5px;
     -moz-border-radius-topright: 5px;
     -webkit-border-top-right-radius: 5px;
         border-top-right-radius: 5px;
@@ -487,7 +490,7 @@
 
 /* Toggle Styling
 ------------------------------------------------------------ */
-.arconix-toggle-wrap {    
+.arconix-toggle-wrap {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
         border-radius: 5px;
