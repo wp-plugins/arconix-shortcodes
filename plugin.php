@@ -4,10 +4,10 @@
  * Plugin URI: http://arconixpc.com/plugins/arconix-portfolio
  * Description: Portfolio Gallery provides an easy way to display your portfolio on your website
  *
- * Version: 0.9.1
+ * Version: 1.0
  *
  * Author: John Gardner
- * Author URI: http://johngardner.co
+ * Author URI: http://arconixpc.com
  *
  * License: GNU General Public License v2.0
  * License URI: http://www.opensource.org/licenses/gpl-license.php
@@ -33,6 +33,17 @@ function arconix_portfolio_activation() {
     flush_rewrite_rules();
 }
 
+register_deactivation_hook( __FILE__, 'arconix_portfolio_deactivation' );
+/**
+ * This function runs on deactivation and flushes the re-write rules so permalinks work properly
+ * 
+ * @since 1.0 
+ */
+function arconix_portfolio_deactivation() {
+    
+    flush_rewrite_rules();
+}
+
 
 add_action( 'after_setup_theme', 'arconix_portfolio_init' );
 /**
@@ -44,8 +55,8 @@ add_action( 'after_setup_theme', 'arconix_portfolio_init' );
 function arconix_portfolio_init() {
     global $_arconix_portfolio;
 
-    define( 'ACP_URL', plugin_dir_url(__FILE__) );
-    define( 'ACP_VERSION', '0.9.1' );
+    define( 'ACP_URL', plugin_dir_url( __FILE__ ) );
+    define( 'ACP_VERSION', '1.0' );
 
     /** Includes **/
     require_once( dirname( __FILE__ ) . '/includes/class-portfolio.php' );

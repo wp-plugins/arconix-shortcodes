@@ -3,7 +3,7 @@ Contributors: jgardner03
 Tags: arconix, portfolio
 Requires at least: 3.2
 Tested up to: 3.2.1
-Stable tag: trunk
+Stable tag: 1.0
 
 Arconix Portfolio allows you to easily display your portfolio on your website.
 
@@ -50,6 +50,10 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 2. Creating a Portfolio Item
 
 == Changelog ==
+
+= 1.0 - 2012-05-20
+* Added jQuery Quicksand support for animating the "features" taxonomy filtering
+* Added ability to enable/disable showing of portfolio title
 
 = 0.9.1 =
 * Initial Release

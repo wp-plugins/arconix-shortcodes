@@ -13,32 +13,43 @@ class Arconix_Portfolio {
      */
     function __construct() {
 
+        /** Post Type and Taxonomy creation */
 	add_action( 'init', array( $this, 'create_post_type' ) );
 	add_action( 'init', array( $this, 'create_taxonomy' ) );
 
-	add_filter( 'manage_edit-portfolio_columns', array( $this, 'columns_filter' ) );
-	add_action( 'manage_posts_custom_column', array( $this, 'columns_data' ) );
-
-	add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
-
-	add_action( 'after_setup_theme', array( $this, 'add_post_thumbnail_support' ), '9999' );
+        /** Post Thumbnail Support */
+        add_action( 'after_setup_theme', array( $this, 'add_post_thumbnail_support' ), '9999' );
 	add_image_size( 'portfolio-mini', 125, 125, TRUE );
 	add_image_size( 'portfolio-thumb', 275, 200, TRUE );
 	add_image_size( 'portfolio-large', 620, 9999 );
 
-	add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_plugin_css' ) );
-	add_action( 'admin_head', array( $this, 'admin_style' ) );
+        /** Modify the Post Type Admin Screen */
+        add_action( 'admin_head', array( $this, 'admin_style' ) );
+	add_filter( 'manage_edit-portfolio_columns', array( $this, 'columns_filter' ) );
+	add_action( 'manage_posts_custom_column', array( $this, 'columns_data' ) );
+	add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
 
-	add_action( 'right_now_content_table_end', array( $this, 'add_portfolio_counts' ) );
+        /** Add our Scripts */
+	add_action( 'init', array( $this , 'register_script' ) );
+	add_action( 'wp_footer', array( $this , 'print_script' ) );
+	add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_css' ) );
+
+        /** Create/Modify Dashboard Widgets */
+	add_action( 'right_now_content_table_end', array( $this, 'right_now' ) );
 	add_action( 'wp_dashboard_setup', array( $this, 'register_dashboard_widget' ) );
 
-	add_filter( 'widget_text', 'do_shortcode' );
-	add_shortcode('portfolio', array( $this, 'portfolio_shortcode') );
-
-	// Add the theme name as a filter to the body class for styling purposes
-	add_filter( 'body_class', array( $this, 'filter_body_class' ) );
+        /** Add Shortcode */
+	add_shortcode( 'portfolio', array( $this, 'portfolio_shortcode' ) );
+        add_filter( 'widget_text', 'do_shortcode' );
 
     }
+
+    /**
+     * This var is used in the shortcode to flag the loading of javascript
+     * @var type boolean
+     */
+    static $load_js;
+
 
     /**
      * Create Portfolio Post Type
@@ -67,9 +78,9 @@ class Arconix_Portfolio {
 		'query_var' => true,
 		'menu_position' => 20,
 		'menu_icon' => ACP_URL . 'images/portfolio-icon-16x16.png',
-		'has_archive' => true,
+		'has_archive' => false,
 		'supports' => array( 'title', 'editor', 'thumbnail' ),
-		'rewrite' => array( 'slug' => 'portfolio' )
+		'rewrite' => array( 'slug' => 'portfolio', 'with_front' => false )
 	    )
 	);
 
@@ -210,7 +221,7 @@ class Arconix_Portfolio {
 
 	    $_wp_theme_features['post-thumbnails'][0][] = 'portfolio';
 	}
-}
+    }
 
     /**
      * Portfolio Shortcode
@@ -218,6 +229,7 @@ class Arconix_Portfolio {
      * @param type $atts
      * @param type $content
      * @since 0.9
+     * @version 1.0
      */
     function portfolio_shortcode( $atts, $content = null ) {
 	/*
@@ -225,7 +237,9 @@ class Arconix_Portfolio {
 	    link =>  page, image
 	    thumb => any built-in image size
 	    full => any built-in image size (this setting is ignored of 'link' is set to 'page')
-	    display => , content, excerpt
+            title => yes, no
+	    display => content, excerpt (leave blank for nothing)
+            
 	*/
 
 	/**
@@ -236,204 +250,202 @@ class Arconix_Portfolio {
 	 * page structure to properly integrate into the theme. Selecting page is only advised for advanced users.
 	 */
 
+	/** Load the javascript */
+	self::$load_js = true;
+
 
 	$defaults = apply_filters( 'arconix_portfolio_shortcode_args',
 	    array(
 		'link' => 'image',
 		'thumb' => 'portfolio-thumb',
 		'full' => 'portfolio-large',
+                'title' => 'yes',
 		'display' => ''
 	    )
 	);
+
 	extract( shortcode_atts( $defaults, $atts ) );
 
 	$args = apply_filters( 'arconix_portfolio_shortcode_query_args',
 	    array(
 		'post_type' => 'portfolio',
 		'posts_per_page' => -1, // show all
+                'meta_key' => '_thumbnail_id', // Should pull only items with featured images
 		'orderby' => 'date',
 		'order' => 'DESC'
 	    )
 	);
-
-	/** create a new query bsaed on our own arguments */
+        
+        /** create a new query based on our own arguments */
 	$portfolio_query = new WP_Query( $args );
+        
+        if( $portfolio_query->have_posts() ) {
+            
+            /** Get the taxonomy and proceed if any exist */
+            $terms = get_terms( 'feature' );
 
-	if( $portfolio_query->have_posts() ) {
-	    global $post;
-	    echo '<ul class="arconix-portfolio-list">';
+            if( $terms ) {
+                echo ' <ul class="arconix-portfolio-features"><li class="arconix-portfolio-category-title">';
+                _e( 'Feature', 'arconix-portfolio') ;
+                echo '</li><li class="active"><a href="javascript:void(0)" class="all">all</a></li>';
 
-	    while( $portfolio_query->have_posts() ) : $portfolio_query->the_post();
-		echo '<li class="arconix-portfolio-list-item">';
-		the_title( '<h3 class="arconix-portfolio-title">', '</h3>' ) ;
+                $term_list = '';
 
-		switch ( $link ) {
-		    case "page" :
-			echo '<a href="';
-			the_permalink();
-			echo '" rel="bookmark"';
-			the_title_attribute('echo=0');
-			echo '>';
-			the_post_thumbnail( $thumb );
-			echo '</a>';
-			break;
+                /** break each of the items into individual elements and modify its output */
+                foreach( $terms as $term ) {
 
-		    case "image" :
-			$_portfolio_img_url = wp_get_attachment_image_src( get_post_thumbnail_id(), $full );
+                    $term_list .= '<li><a href="javascript:void(0)" class="' . $term->slug . '">' . $term->name . '</a></li>';
+                }
 
-			echo '<a href="' . $_portfolio_img_url[0] . '" title="' . the_title_attribute('echo=0') . '" >';
-			the_post_thumbnail( $thumb );
-			echo '</a>';
-			break;
+                /** Echo our modified list */
+                echo $term_list . '</ul>';
+            }
+            
+            echo '<ul class="arconix-portfolio-grid">';
+            
+            while( $portfolio_query->have_posts() ) : $portfolio_query->the_post();
+            
+                /** Get the terms list */
+                $terms = get_the_terms( get_the_ID(), 'feature' );
+                
+                /** Add each term for a given portfolio item as a data type so it can be filtered by Quicksand */
+                echo '<li data-id="id-' . get_the_ID() . '" data-type="';
+                foreach ( $terms as $term ) { 
+                    echo $term->slug . ' ';
+                }
+                echo '">';
+                
+                /** Output the title if desired */
+                if( $title == "yes" ) echo '<div class="arconix-portfolio-title">' . get_the_title() . '</div>';
+                
+                /** Handle the image link */
+                switch( $link ) {
+                    case "page" :
+                        echo '<a href="';
+                        the_permalink();
+                        echo '" rel="bookmark">';                        
+                        the_post_thumbnail( $thumb );
+                        echo '</a>';
+                        break;
 
-		    default : // If it's anything else, return nothing.
-			break;
+                    case "image" :
+                        $_portfolio_img_url = wp_get_attachment_image_src( get_post_thumbnail_id(), $full );
 
-		}
+                        echo '<a href="' . $_portfolio_img_url[0] . '" title="' . the_title_attribute( 'echo=0' ) . '" >';
+                        the_post_thumbnail( $thumb );
+                        echo '</a>';
+                        break;
 
-		// Display the custom taxonomy
-		echo get_the_term_list( $post->ID, 'feature', '<div class="arconix-portfolio-tax-list"><span class="arconix-portfolio-tax-title">Features: </span>', ', ', '</div>' );
+                    default : // If it's anything else, return nothing.
+                        break;
+                }
+                
+                /** Display the content */
+                switch( $display ) {
+                    case "content" :
+                        echo '<div class="arconix-portfolio-text">';
+                        the_content();
+                        echo '</div>';
+                        break;
 
-		// Display the content
-		switch ( $display ) {
-		    case "content" :
-			echo '<div class="arconix-portfolio-content">';
-			the_content();
-			echo '</div>';
-			break;
+                    case "excerpt" :
+                        echo '<div class="arconix-portfolio-text">';
+                        the_excerpt();
+                        echo '</div>';
+                        break;
 
-		    case "excerpt" :
-			echo '<div class="arconix-portfolio-excerpt">';
-			the_excerpt();
-			echo '</div>';
-			break;
-
-		    default : // If it's anything else, return nothing.
-			break;
-
-		}
-		echo '</li>';
-
-	    endwhile;
-		echo '</ul>';
-
-	} else {
-
-	    _e( "There are no portfolio items yet" , 'arconix-portfolio' );
-	}
-	/** destroy our query so that nothing else gets messed up */
-	wp_reset_postdata();
+                    default : // If it's anything else, return nothing.
+                        break;
+                }
+                
+                echo '</li>';
+                
+            endwhile;
+            
+            echo '</ul>';
+        }
 
     }
 
+    
     /**
      * Add the Portfolio Post type to the "Right Now" Dashboard Widget
      *
      * @link http://bajada.net/2010/06/08/how-to-add-custom-post-types-and-taxonomies-to-the-wordpress-right-now-dashboard-widget
-     * @return type
+     * @since 0.9
      */
-    function add_portfolio_counts() {
-
-	$args = array(
-	    'public' => true ,
-	    '_builtin' => false
-	);
-	$output = 'object';
-	$operator = 'and';
-
-	$num_posts = wp_count_posts( 'portfolio' );
-	$num = number_format_i18n( $num_posts->publish );
-	$text = _n( 'Portfolio Item', 'Portfolio Items', intval($num_posts->publish) );
-	if ( current_user_can( 'edit_posts' ) ) {
-
-	    $num = "<a href='edit.php?post_type=portfolio'>$num</a>";
-	    $text = "<a href='edit.php?post_type=portfolio'>$text</a>";
-
-	}
-	echo '<td class="first b b-portfolio">' . $num . '</td>';
-	echo '<td class="t portfolio">' . $text . '</td>';
-	echo '</tr>';
-
-	if ( $num_posts->pending > 0 ) {
-	    $num = number_format_i18n( $num_posts->pending );
-	    $text = _n( 'Portfolio Item Pending', 'Portfolio Items Pending', intval($num_posts->pending) );
-	    if ( current_user_can( 'edit_posts' ) ) {
-		$num = "<a href='edit.php?post_status=pending&post_type=portfolio'>$num</a>";
-		$text = "<a href='edit.php?post_status=pending&post_type=portfolio'>$text</a>";
-	    }
-	    echo '<td class="first b b-portfolio">' . $num . '</td>';
-	    echo '<td class="t portfolio">' . $text . '</td>';
-
-	    echo '</tr>';
-	}
-
-	$taxonomies = get_taxonomies( $args , $output , $operator );
-
-	foreach( $taxonomies as $taxonomy ) {
-	    $num_terms  = wp_count_terms( $taxonomy->name );
-	    $num = number_format_i18n( $num_terms );
-	    $text = _n( $taxonomy->labels->singular_name, $taxonomy->labels->name , intval( $num_terms ) );
-	    if ( current_user_can( 'manage_categories' ) ) {
-
-	      $num = "<a href='edit-tags.php?taxonomy=$taxonomy->name'>$num</a>";
-	      $text = "<a href='edit-tags.php?taxonomy=$taxonomy->name'>$text</a>";
-
-	    }
-	    echo '<tr><td class="first b b-' . $taxonomy->name . '">' . $num . '</td>';
-	    echo '<td class="t ' . $taxonomy->name . '">' . $text . '</td></tr>';
-      }
-
+    function right_now() {
+	include_once( dirname( __FILE__ ) . '/views/right-now.php' );
     }
 
 
+    /**
+     * Style the portfolio icon on the admin screen
+     * 
+     * @since 0.9
+     */
     function admin_style() {
 	printf( '<style type="text/css" media="screen">.icon32-posts-portfolio { background: transparent url(%s) no-repeat !important; }</style>', ACP_URL . 'images/portfolio-icon-32x32.png' );
     }
+
+
+    /**
+     * Register the necessary javascript, which can be overriden by creating your own file and
+     * placing it in the root of your theme's folder
+     *
+     * @since 1.0
+     */
+    function register_script() {
+
+        wp_register_script( 'jquery-quicksand', ACP_URL . 'includes/js/jquery.quicksand.js', array( 'jquery' ), '1.2.2', true );
+        wp_register_script( 'jquery-easing', ACP_URL . 'includes/js/jquery.easing.1.3.js', array( 'jquery' ), '1.3', true );
+
+	if( file_exists( get_stylesheet_directory() . "/arconix-portfolio.js" ) ) {
+	    wp_register_script( 'arconix-portfolio-js', get_stylesheet_directory_uri() . '/arconix-portfolio.js', array( 'jquery-quicksand' ), ACP_VERSION, true );
+	}
+	elseif( file_exists( get_template_directory() . "/arconix-portfolio.js" ) ) {
+	    wp_register_script( 'arconix-portfolio-js', get_template_directory_uri() . '/arconix-portfolio.js', array( 'jquery-quicksand' ), ACP_VERSION, true );
+	}
+	else {
+            wp_register_script( 'arconix-portfolio-js', ACP_URL . 'includes/js/portfolio.js', array( 'jquery-quicksand', 'jquery-easing' ), ACP_VERSION, true );
+	}
+    }
+
+
+    /**
+     * Check the state of the variable. If true, load the registered javascript
+     *
+     * @since 1.0
+     */
+    function print_script() {
+
+	if( ! self::$load_js )
+	    return;
+
+	wp_print_scripts( 'arconix-portfolio-js' );
+    }
+
 
     /**
      * Load the plugin css. If the css file is present in the theme directory, it will be loaded instead,
      * allowing for an easy way to override the default template
      *
      * @since 0.9
+     * @version 1.0
      */
-    function enqueue_plugin_css() {
+    function enqueue_css() {
 
 	if( file_exists( get_stylesheet_directory() . "/arconix-portfolio.css" ) ) {
 	    wp_enqueue_style( 'arconix-portfolio', get_stylesheet_directory_uri() . '/arconix-portfolio.css', array(), ACP_VERSION );
 	}
-	elseif( file_exists( get_template_directory() . "/arconix-shortcodes.css" ) ) {
+	elseif( file_exists( get_template_directory() . "/arconix-portfolio.css" ) ) {
 	    wp_enqueue_style( 'arconix-portfolio', get_template_directory_uri() . '/arconix-portfolio.css', array(), ACP_VERSION );
 	}
 	else {
-	    wp_enqueue_style( 'arconix-portfolio', plugins_url( '/arconix-portfolio.css', __FILE__), array(), ACP_VERSION );
+	    wp_enqueue_style( 'arconix-portfolio', plugins_url( '/portfolio.css', __FILE__), array(), ACP_VERSION );
 	}
     }
 
-    /**
-     * Filter the body class and add the themename for easy plugin styling
-     *
-     * @param array $classes
-     * @return type array
-     *
-     * @since 0.9
-     */
-    function filter_body_class( $classes ) {
-
-	$theme_info = get_theme_data( STYLESHEETPATH . '/style.css' );
-	$theme_name = $theme_info['Name'];
-
-	/* normalize the theme name by replacing spaces with dashes and forcing to lowercase
-	 * this will help with base plugin styling as 1 stylesheet can contain multiple themes defaults
-	 */
-	$theme_name = strtolower(
-	    str_replace( " ", "-", $theme_name )
-	);
-
-	/** add the theme name to the classes array */
-	$classes[] = $theme_name;
-
-	return $classes;
-    }
 
     /**
      * Adds a widget to the dashboard.
@@ -441,29 +453,18 @@ class Arconix_Portfolio {
      * @since 0.9.1
      */
     function register_dashboard_widget() {
-        /*if ( ! isset( $widget_options['ac-portfolio'] ) ) {
-		$update = true;
-		$widget_options['ac-portfolio'] = array(
-                    'link' => 'http://arconixpc.com/tag/arconix-portfolio/',
-                    'url' => 'http://arconixpc.com/tag/arconix-portfolio/feed/',
-                    'title' => 'Arconix Portfolio',
-                    'items' => 4,
-                    'show_summary' => 1,
-                    'show_author' => 0,
-                    'show_date' => 1,
-		);
-	}*/
-
-        wp_add_dashboard_widget('ac-portfolio', 'Arconix Portfolio', array( $this, 'dashboard_widget_output' ) );
+        wp_add_dashboard_widget( 'ac-portfolio', 'Arconix Portfolio', array( $this, 'dashboard_widget_output' ) );
     }
+
 
     /**
      * Output for the dashboard widget
      *
      * @since 0.9.1
+     * @version 1.0
      */
     function dashboard_widget_output() {
-        //echo '<p class="widget-loading hide-if-no-js">' . __( 'Loading&#8230;' ) . '</p><p class="describe hide-if-js">' . __('This widget requires JavaScript.') . '</p>';
+
         echo '<div class="rss-widget">';
 
         wp_widget_rss_output( array(
@@ -476,8 +477,9 @@ class Arconix_Portfolio {
         ) );
 
         echo '<div class="acp-widget-bottom"><ul>'; ?>
-            <li><img src="<?php echo ACP_URL . 'images/page_16.png'?>"><a href="http://arcnx.co/apwiki">Wiki Page</a></li>
-            <li><img src="<?php echo ACP_URL . 'images/help_16.png'?>"><a href="http://wordpress.org/tags/arconix-portfolio?forum_id=10">Support Forum</a></li>
+            <li><a href="http://arcnx.co/apwiki"><img src="<?php echo ACP_URL . 'images/page-16x16.png'?>">Wiki Page</a></li>
+            <li><a href="http://arcnx.co/aphelp"><img src="<?php echo ACP_URL . 'images/help-16x16.png'?>">Support Forum</a></li>
+            <li><a href="http://arcnx.co/aptrello"><img src="<?php echo ACP_URL . 'images/trello-16x16.png'?>">Dev Board</a></li>
         <?php echo '</ul></div>';
         echo "</div>";
 
@@ -487,17 +489,8 @@ class Arconix_Portfolio {
             #ac-portfolio .acp-widget-bottom { border-top: 1px solid #ddd; padding-top: 10px; text-align: center; }
             #ac-portfolio .acp-widget-bottom ul { list-style: none; }
             #ac-portfolio .acp-widget-bottom ul li { display: inline; padding-right: 9%; }
-            #ac-portfolio .acp-widget-bottom img { padding-right: 3px; vertical-align: middle; }
+            #ac-portfolio .acp-widget-bottom img { padding-right: 3px; vertical-align: top; }
         </style>';
-    }
-
-    /**
-     * Callback function for the "configure" option on the dashboard widget
-     *
-     * @since
-     */
-    function dashboard_widget_control() {
-        //wp_dashboard_rss_control( 'ac-portfolio', array( 'link' => false, 'title' => false, 'show_author' => false ) );
     }
 
 }
