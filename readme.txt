@@ -51,7 +51,7 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 
 == Changelog ==
 
-= 1.0 - 2012-05-20
+= 1.0 - 2012-05-20 =
 * Added jQuery Quicksand support for animating the "features" taxonomy filtering
 * Added ability to enable/disable showing of portfolio title
 
