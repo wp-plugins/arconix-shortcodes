@@ -122,7 +122,7 @@ class Arconix_Portfolio {
 	);
 
 
-	register_taxonomy('feature', 'portfolio', $args );
+	register_taxonomy( 'feature', 'portfolio', $args );
 
     }
 
@@ -229,7 +229,7 @@ class Arconix_Portfolio {
      * @param type $atts
      * @param type $content
      * @since 0.9
-     * @version 1.0
+     * @version 1.1
      */
     function portfolio_shortcode( $atts, $content = null ) {
 	/*
@@ -237,9 +237,14 @@ class Arconix_Portfolio {
 	    link =>  page, image
 	    thumb => any built-in image size
 	    full => any built-in image size (this setting is ignored of 'link' is set to 'page')
-            title => yes, no
+            title => above, below or 'blank' ("yes" is converted to "above" for backwards compatibility)
 	    display => content, excerpt (leave blank for nothing)
-            
+            heading => When displaying the 'feature' items in a row above the portfolio items, define the heading text for that section.
+            orderby => date or any other orderby param available. http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters
+            order => ASC (ascending), DESC (descending)
+            terms => a 'feature' tag you want to filter on
+            operator => 'IN', 'NOT IN' filter for the term tag above
+
 	*/
 
 	/**
@@ -253,41 +258,90 @@ class Arconix_Portfolio {
 	/** Load the javascript */
 	self::$load_js = true;
 
-
+	/** Shortcode defaults */
 	$defaults = apply_filters( 'arconix_portfolio_shortcode_args',
 	    array(
 		'link' => 'image',
 		'thumb' => 'portfolio-thumb',
 		'full' => 'portfolio-large',
-                'title' => 'yes',
-		'display' => ''
+                'title' => 'above',
+		'display' => '',
+                'heading' => 'Display',
+		'orderby' => 'date',
+		'order' => 'desc',
+                'terms' => '',
+                'operator' => 'IN'
 	    )
 	);
 
 	extract( shortcode_atts( $defaults, $atts ) );
+        
+        if( $title == "yes" ) $title == "above"; // For backwards compatibility
 
+	/** Default Query arguments -- can be overridden by filter */
 	$args = apply_filters( 'arconix_portfolio_shortcode_query_args',
 	    array(
 		'post_type' => 'portfolio',
 		'posts_per_page' => -1, // show all
                 'meta_key' => '_thumbnail_id', // Should pull only items with featured images
-		'orderby' => 'date',
-		'order' => 'DESC'
+		'orderby' => $orderby,
+		'order' => $order,
 	    )
 	);
-        
-        /** create a new query based on our own arguments */
+
+        /** If the user has defined any tax terms, then we create our tax_query and merge to our main query  */
+        if( $terms ) {
+            
+            $tax_query_args = array(
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'feature',
+                        'field' => 'slug',
+                        'terms' => $terms,
+                        'operator' => $operator  
+                      )                    
+                )            
+            );
+            
+            /** Join the tax array to the general query */
+            $args = array_merge( $args, $tax_query_args );
+        }	
+
+	$return = '';
+
+        /** Create a new query based on our own arguments */
 	$portfolio_query = new WP_Query( $args );
-        
+
         if( $portfolio_query->have_posts() ) {
             
-            /** Get the taxonomy and proceed if any exist */
-            $terms = get_terms( 'feature' );
-
+            $a ='';
+            
             if( $terms ) {
-                echo ' <ul class="arconix-portfolio-features"><li class="arconix-portfolio-category-title">';
-                _e( 'Feature', 'arconix-portfolio') ;
-                echo '</li><li class="active"><a href="javascript:void(0)" class="all">all</a></li>';
+                
+                /** Change the get_terms argument based on the shortcode $operator */
+                switch( $operator) {
+                    case "IN":
+                        $a = array( 'include' => $terms );
+                        break;
+                
+                    case "NOT IN":
+                        $a = array( 'exclude' => $terms );
+                        break;
+                
+                    default:
+                        break;
+                }
+                
+            }
+
+            /** We're simply recycling the variable at this point */
+            $terms = get_terms( 'feature', $a );
+            
+            /** If there are multiple terms in use, then run through our display list */
+            if( count( $terms ) > 1 )  {
+                $return .= '<ul class="arconix-portfolio-features"><li class="arconix-portfolio-category-title">';
+                $return .= $heading;
+                $return .= '</li><li class="active"><a href="javascript:void(0)" class="all">all</a></li>';
 
                 $term_list = '';
 
@@ -297,77 +351,76 @@ class Arconix_Portfolio {
                     $term_list .= '<li><a href="javascript:void(0)" class="' . $term->slug . '">' . $term->name . '</a></li>';
                 }
 
-                /** Echo our modified list */
-                echo $term_list . '</ul>';
+                /** Return our modified list */
+                $return .= $term_list . '</ul>';
             }
-            
-            echo '<ul class="arconix-portfolio-grid">';
-            
+
+            $return .= '<ul class="arconix-portfolio-grid">';
+
             while( $portfolio_query->have_posts() ) : $portfolio_query->the_post();
-            
+
                 /** Get the terms list */
                 $terms = get_the_terms( get_the_ID(), 'feature' );
-                
+
                 /** Add each term for a given portfolio item as a data type so it can be filtered by Quicksand */
-                echo '<li data-id="id-' . get_the_ID() . '" data-type="';
-                foreach ( $terms as $term ) { 
-                    echo $term->slug . ' ';
+                $return .= '<li data-id="id-' . get_the_ID() . '" data-type="';
+                foreach ( $terms as $term ) {
+                    $return .= $term->slug . ' ';
                 }
-                echo '">';
-                
-                /** Output the title if desired */
-                if( $title == "yes" ) echo '<div class="arconix-portfolio-title">' . get_the_title() . '</div>';
-                
+                $return .= '">';
+
+                /** Above image Title output */
+                if( $title == "above" ) $return .= '<div class="arconix-portfolio-title">' . get_the_title() . '</div>';
+
                 /** Handle the image link */
                 switch( $link ) {
                     case "page" :
-                        echo '<a href="';
-                        the_permalink();
-                        echo '" rel="bookmark">';                        
-                        the_post_thumbnail( $thumb );
-                        echo '</a>';
+                        $return .= '<a href="' . get_permalink() . '" rel="bookmark">';
+                        
+			$return .= get_the_post_thumbnail( get_the_ID(), $thumb );
+			$return .= '</a>';
                         break;
 
                     case "image" :
                         $_portfolio_img_url = wp_get_attachment_image_src( get_post_thumbnail_id(), $full );
 
-                        echo '<a href="' . $_portfolio_img_url[0] . '" title="' . the_title_attribute( 'echo=0' ) . '" >';
-                        the_post_thumbnail( $thumb );
-                        echo '</a>';
+                        $return .= '<a href="' . $_portfolio_img_url[0] . '" title="' . the_title_attribute( 'echo=0' ) . '" >';
+                        $return .= get_the_post_thumbnail( get_the_ID(), $thumb );
+                        $return .= '</a>';
                         break;
 
                     default : // If it's anything else, return nothing.
                         break;
                 }
-                
+
+		/** Below image Title output */
+                if( $title == "below" ) $return .= '<div class="arconix-portfolio-title">' . get_the_title() . '</div>';
+
                 /** Display the content */
                 switch( $display ) {
                     case "content" :
-                        echo '<div class="arconix-portfolio-text">';
-                        the_content();
-                        echo '</div>';
+                        $return .= '<div class="arconix-portfolio-text">' . get_the_content() . '</div>';
                         break;
 
                     case "excerpt" :
-                        echo '<div class="arconix-portfolio-text">';
-                        the_excerpt();
-                        echo '</div>';
+                        $return .= '<div class="arconix-portfolio-text">' . get_the_excerpt() . '</div>';
                         break;
 
                     default : // If it's anything else, return nothing.
                         break;
                 }
-                
-                echo '</li>';
-                
+
+                $return .= '</li>';
+
             endwhile;
-            
-            echo '</ul>';
+
+            $return .= '</ul>';
         }
 
+	return $return;
     }
 
-    
+
     /**
      * Add the Portfolio Post type to the "Right Now" Dashboard Widget
      *
@@ -381,7 +434,7 @@ class Arconix_Portfolio {
 
     /**
      * Style the portfolio icon on the admin screen
-     * 
+     *
      * @since 0.9
      */
     function admin_style() {
@@ -394,6 +447,7 @@ class Arconix_Portfolio {
      * placing it in the root of your theme's folder
      *
      * @since 1.0
+     * @version 1.1.0
      */
     function register_script() {
 
@@ -401,10 +455,10 @@ class Arconix_Portfolio {
         wp_register_script( 'jquery-easing', ACP_URL . 'includes/js/jquery.easing.1.3.js', array( 'jquery' ), '1.3', true );
 
 	if( file_exists( get_stylesheet_directory() . "/arconix-portfolio.js" ) ) {
-	    wp_register_script( 'arconix-portfolio-js', get_stylesheet_directory_uri() . '/arconix-portfolio.js', array( 'jquery-quicksand' ), ACP_VERSION, true );
+	    wp_register_script( 'arconix-portfolio-js', get_stylesheet_directory_uri() . '/arconix-portfolio.js', array( 'jquery-quicksand', 'jquery-easing' ), ACP_VERSION, true );
 	}
 	elseif( file_exists( get_template_directory() . "/arconix-portfolio.js" ) ) {
-	    wp_register_script( 'arconix-portfolio-js', get_template_directory_uri() . '/arconix-portfolio.js', array( 'jquery-quicksand' ), ACP_VERSION, true );
+	    wp_register_script( 'arconix-portfolio-js', get_template_directory_uri() . '/arconix-portfolio.js', array( 'jquery-quicksand', 'jquery-easing' ), ACP_VERSION, true );
 	}
 	else {
             wp_register_script( 'arconix-portfolio-js', ACP_URL . 'includes/js/portfolio.js', array( 'jquery-quicksand', 'jquery-easing' ), ACP_VERSION, true );
