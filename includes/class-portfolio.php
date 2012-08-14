@@ -229,7 +229,7 @@ class Arconix_Portfolio {
      * @param type $atts
      * @param type $content
      * @since 0.9
-     * @version 1.1
+     * @version 1.1.1
      */
     function portfolio_shortcode( $atts, $content = null ) {
 	/*
@@ -248,11 +248,11 @@ class Arconix_Portfolio {
 	*/
 
 	/**
-	 * Currently 'image' is the only supported link option right now
-	 *
-	 * While 'page' is an available option, it can potentially require a lot of work on the part of the
-	 * end user since the plugin can't possibly know what theme it's being used with and create the necessary
-	 * page structure to properly integrate into the theme. Selecting page is only advised for advanced users.
+	 * Currently 'image' is the only supported link option right now. Linking to a page
+         * might require some additional coding knowledge and is therefore recommended only
+         * for intermediate to advanced users familiar with WordPress and PHP
+         * 
+         * @see http://arconixpc.com/2012/linking-portfolio-items-to-pages
 	 */
 
 	/** Load the javascript */
@@ -274,11 +274,12 @@ class Arconix_Portfolio {
 	    )
 	);
 
+        /** Parse the arguments for use in the code below */
 	extract( shortcode_atts( $defaults, $atts ) );
         
         if( $title == "yes" ) $title == "above"; // For backwards compatibility
 
-	/** Default Query arguments -- can be overridden by filter */
+	/** Default Query arguments */
 	$args = apply_filters( 'arconix_portfolio_shortcode_query_args',
 	    array(
 		'post_type' => 'portfolio',
@@ -292,81 +293,91 @@ class Arconix_Portfolio {
         /** If the user has defined any tax terms, then we create our tax_query and merge to our main query  */
         if( $terms ) {
             
-            $tax_query_args = array(
-                'tax_query' => array(
+            $tax_query_args = apply_filters( 'arconix_portfolio_shortcode_tax_query_args', 
                     array(
-                        'taxonomy' => 'feature',
-                        'field' => 'slug',
-                        'terms' => $terms,
-                        'operator' => $operator  
-                      )                    
-                )            
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => 'feature',
+                                'field' => 'slug',
+                                'terms' => $terms,
+                                'operator' => $operator  
+                              )
+                        )
+                    )
             );
             
             /** Join the tax array to the general query */
             $args = array_merge( $args, $tax_query_args );
         }	
 
-	$return = '';
+	$return = ''; // Var that will be concatenated with our portfolio data
 
         /** Create a new query based on our own arguments */
 	$portfolio_query = new WP_Query( $args );
 
         if( $portfolio_query->have_posts() ) {
             
-            $a ='';
+            $a = ''; // Var to hold our operate arguments
             
             if( $terms ) {
                 
-                /** Change the get_terms argument based on the shortcode $operator */
+                /** Translate our user-entered slug into an id we can use */
+                $termid = get_term_by( 'slug', $terms, 'feature' );
+                $termid = $termid->term_id;
+                
+                /** Change the get_terms argument based on the shortcode $operator, but default to IN */
                 switch( $operator) {
-                    case "IN":
-                        $a = array( 'include' => $terms );
-                        break;
-                
                     case "NOT IN":
-                        $a = array( 'exclude' => $terms );
+                        $a = array( 'exclude' => $termid );
                         break;
-                
+                    
+                    case "IN":
                     default:
+                        $a = array( 'include' => $termid );
                         break;
+
                 }
-                
             }
 
-            /** We're simply recycling the variable at this point */
-            $terms = get_terms( 'feature', $a );
+            /** Get the tax terms only from the items in our query */
+            $get_terms = get_terms( 'feature', $a );
             
-            /** If there are multiple terms in use, then run through our display list */
-            if( count( $terms ) > 1 )  {
-                $return .= '<ul class="arconix-portfolio-features"><li class="arconix-portfolio-category-title">';
-                $return .= $heading;
-                $return .= '</li><li class="active"><a href="javascript:void(0)" class="all">all</a></li>';
+            
+                /** If there are multiple terms in use, then run through our display list */
+                if( count( $get_terms ) > 1 )  {
+                    $return .= '<ul class="arconix-portfolio-features"><li class="arconix-portfolio-category-title">';
+                    $return .= $heading;
+                    $return .= '</li><li class="active"><a href="javascript:void(0)" class="all">all</a></li>';
 
-                $term_list = '';
+                    $term_list = '';
 
-                /** break each of the items into individual elements and modify its output */
-                foreach( $terms as $term ) {
+                    /** break each of the items into individual elements and modify its output */
+                    foreach( $get_terms as $term ) {
 
-                    $term_list .= '<li><a href="javascript:void(0)" class="' . $term->slug . '">' . $term->name . '</a></li>';
+                        $term_list .= '<li><a href="javascript:void(0)" class="' . $term->slug . '">' . $term->name . '</a></li>';
+                    }
+
+                    /** Return our modified list */
+                    $return .= $term_list . '</ul>';
                 }
-
-                /** Return our modified list */
-                $return .= $term_list . '</ul>';
-            }
+        
 
             $return .= '<ul class="arconix-portfolio-grid">';
 
             while( $portfolio_query->have_posts() ) : $portfolio_query->the_post();
 
                 /** Get the terms list */
-                $terms = get_the_terms( get_the_ID(), 'feature' );
+                $get_the_terms = get_the_terms( get_the_ID(), 'feature' );
 
                 /** Add each term for a given portfolio item as a data type so it can be filtered by Quicksand */
                 $return .= '<li data-id="id-' . get_the_ID() . '" data-type="';
-                foreach ( $terms as $term ) {
-                    $return .= $term->slug . ' ';
+                
+                if( $get_the_terms ) {
+                    foreach ( $get_the_terms as $term ) {
+                        $return .= $term->slug . ' ';
+                    }
                 }
+                
                 $return .= '">';
 
                 /** Above image Title output */

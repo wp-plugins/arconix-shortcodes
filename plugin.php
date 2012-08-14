@@ -4,7 +4,7 @@
  * Plugin URI: http://arconixpc.com/plugins/arconix-portfolio
  * Description: Portfolio Gallery provides an easy way to display your portfolio on your website
  *
- * Version: 1.1
+ * Version: 1.1.1
  *
  * Author: John Gardner
  * Author URI: http://arconixpc.com
@@ -56,7 +56,7 @@ function arconix_portfolio_init() {
     global $_arconix_portfolio;
 
     define( 'ACP_URL', plugin_dir_url( __FILE__ ) );
-    define( 'ACP_VERSION', '1.1' );
+    define( 'ACP_VERSION', '1.1.1' );
 
     /** Includes **/
     require_once( dirname( __FILE__ ) . '/includes/class-portfolio.php' );

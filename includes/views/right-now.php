@@ -47,7 +47,9 @@ if( $num_posts->pending > 0 ) {
     echo '</tr>';
 }
 
-$taxonomies = get_taxonomies( $args , $output , $operator );
+$portfolio_args = array ( 'name' => 'feature' );
+
+$taxonomies = get_taxonomies( $portfolio_args , $output , $operator );
 
     foreach( $taxonomies as $taxonomy ) {
         $num_terms  = wp_count_terms( $taxonomy->name );

@@ -25,6 +25,9 @@ With this plugin you can easily showcase your portfolio on your WordPress websit
 
 == Upgrade Notice ==
 
+= 1.1.1 =
+Fixed a php error and some display inconsistencies when using taxonomy filter
+
 = 1.1 =
 Added support for displaying or hiding a user-specified taxonomy when displaying the portfolio
 
@@ -52,6 +55,10 @@ I can certainly look into it. Contact me through [Twitter](http://arcnx.co/twitt
 2. Creating a Portfolio Item
 
 == Changelog ==
+
+= 1.1.1 =
+* Fixed a php error when not using any "features"
+* Fixed some display inconsistencies when using the taxonomy filter
 
 = 1.1.0 =
 * Added ability to choose which feature term is displayed or hidden through a shortcode argument
