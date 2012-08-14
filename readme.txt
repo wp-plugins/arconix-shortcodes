@@ -3,7 +3,7 @@ Contributors: jgardner03
 Tags: arconix, portfolio
 Requires at least: 3.2
 Tested up to: 3.4.1
-Stable tag: 1.1
+Stable tag: 1.1.1
 
 Arconix Portfolio allows you to easily display your portfolio on your website.
 
