@@ -4,7 +4,7 @@
  * Plugin URI: http://arconixpc.com/plugins/arconix-portfolio
  * Description: Portfolio Gallery provides an easy way to display your portfolio on your website
  *
- * Version: 1.2.0
+ * Version: 1.2.1
  *
  * Author: John Gardner
  * Author URI: http://arconixpc.com
@@ -49,7 +49,7 @@ class Arconix_Portfolio {
      * @since  1.2.0
      */
     function constants() {
-        define( 'ACP_VERSION',          '1.2.0' );
+        define( 'ACP_VERSION',          '1.2.1' );
         define( 'ACP_URL',              trailingslashit( plugin_dir_url( __FILE__ ) ) );
         define( 'ACP_IMAGES_URL',       trailingslashit( ACP_URL . 'images' ) );
         define( 'ACP_INCLUDES_URL',     trailingslashit( ACP_URL . 'includes' ) );
@@ -327,10 +327,10 @@ class Arconix_Portfolio {
                 array(
                     'tax_query' => array(
                         array(
-                            'taxonomy' => $defaults['taxonomy']['slug'],
+                            'taxonomy' => $default_args['taxonomy']['slug'],
                             'field' => 'slug',
                             'terms' => $terms,
-                            'operator' => $operator  
+                            'operator' => $operator
                         )
                     )
                 )
@@ -351,7 +351,7 @@ class Arconix_Portfolio {
             
             if( $terms ) {            
                 // Translate our user-entered slug into an id we can use
-                $termid = get_term_by( 'slug', $terms, $defaults['taxonomy']['slug'] );
+                $termid = get_term_by( 'slug', $terms, $default_args['taxonomy']['slug'] );
                 $termid = $termid->term_id;
                 
                 // Change the get_terms argument based on the shortcode $operator, but default to IN
