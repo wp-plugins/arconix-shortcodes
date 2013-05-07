@@ -31,11 +31,11 @@ Upgrade normally via your WordPress admin -> Plugins panel.
 
 = What is compatibility mode? =
 
-Compatibility mode adds a prefix to all the plugin's shortcodes. This was put into place to help avoid conflicts with other themes or plugins that used the same shortcode (like `[button]` or `[box]`)
+Compatibility mode adds a prefix to all the plugin's shortcodes. This was put into place to help avoid conflicts with other themes or plugins that used the same shortcode (like `[ button ]` or `[ box ]`)
 
 = How do I use compatibility mode? =
 
-Place the following code in your theme's `functions.php` file: `define( 'ACS_COMPAT', true ); // Arconix Shortcodes Compatibility Mode`. Now when adding a shortcode, just make sure they start `ac-` (i.e. `[ac-box]content[/ac-box]`
+Place the following code in your theme's `functions.php` file: `define( 'ACS_COMPAT', true ); // Arconix Shortcodes Compatibility Mode`. Now when adding a shortcode, just make sure they start `ac-` (i.e. `[ ac-box ]content[ /ac-box ]`
 
 = Where can I find more information on how to use the shortcodes?  =
 
