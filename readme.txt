@@ -3,8 +3,8 @@ Contributors: jgardner03
 Donate link: http://arcnx.co/acsdonation
 Tags: arconix, shortcodes, tabs, toggle, buttons, accordion
 Requires at least: 3.4
-Tested up to: 3.5
-Stable tag: 1.1.2
+Tested up to: 3.8
+Stable tag: 1.2.0
 
 Arconix Shortcodes provides a number of useful design elements like buttons, boxes, tabs and toggles to help compliment any website.
 
@@ -16,6 +16,7 @@ With this plugin you can easily add various kinds of styled boxes, buttons, tabs
 * 8 style shortcodes (accordions, boxes, tabs, toggles, etc...)
 * 5 utility shortcodes (login-logout, google-map, etc...)
 * Support for up to 5 columns
+* Has a Compatibility Mode available to help prevent shortcode name conflicts
 
 == Installation ==
 
@@ -31,20 +32,29 @@ Upgrade normally via your WordPress admin -> Plugins panel.
 
 = What is compatibility mode? =
 
-Compatibility mode adds a prefix to all the plugin's shortcodes. This was put into place to help avoid conflicts with other themes or plugins that used the same shortcode (like `[ button ]` or `[ box ]`)
+Compatibility mode adds a prefix to all the plugin's shortcodes. This was put into place to help avoid conflicts with other themes or plugins that used the same shortcode (like `[button]` or `[box]`)
 
-= How do I use compatibility mode? =
+= How do I enable compatibility mode? =
 
-Place the following code in your theme's `functions.php` file: `define( 'ACS_COMPAT', true ); // Arconix Shortcodes Compatibility Mode`. Now when adding a shortcode, just make sure they start `ac-` (i.e. `[ ac-box ]content[ /ac-box ]`
+Place the following code in your theme's `functions.php` file: 
+`
+define( 'ACS_COMPAT', true ); // Arconix Shortcodes Compatibility Mode
+` 
+Now when adding a shortcode, just make sure they start `ac-` (i.e. `[ac-box]content[/ac-box]`
 
 = Where can I find more information on how to use the shortcodes?  =
 
-* Visit the plugin's [Wiki Page](http://arcnx.co/aswiki) for documentation on all the shortcodes
+* Visit the plugin's [Documentation](http://arcnx.co/aswiki) for explanations on all the shortcodes
 * Tutorials on advanced plugin usage can be found at [Arconix Computers](http://arconixpc.com/tag/arconix-shortcodes)
 
 = How can I collapse all the accordions? =
 
-While you can set the accordions to all collapse on load, the jQuery Tools script that powers these accordions does not support closing all the accordions once one has been opened.
+While you can set the accordions to all collapse when the page is first loaded, the jQuery Tools script that powers these accordions does not support closing all the accordions once one has been opened.
+
+= The Accordions/Tabs/Toggles isn't working =
+While you can certainly start a thread in the [support forum](http://arcnx.co/ashelp), there are some troubleshooting steps you can take beforehand to help speed up the process.
+1. Check to make sure the javascripts are loading correctly. Load the page with the malfunctioning shortcode in your browser and view your page's source (usually CTRL + U). Look for jQuery, jQuery Tools and Arconix Shortcodes JS files there. If you don't see jQuery Tools or the Arconix scripts at all (they're somewhere near the bottom of the page), then your theme's `footer.php` file is likely missing `<?php wp_footer(); ?>`, which is neccessary for the operation of mine and many other plugins. If you're unable or unwilling to resolve the issue yourself, contact the theme developer for assistance.
+2. Check to make sure only one copy of jQuery is being loaded. Many times conflicts arise when themes or plugins load jQuery incorrectly, causing it to be loaded multiple times in multiple versions. In order to find the offending item, start by disabling your plugins one by one until you find the problem. If you've disabled all your plugins and the issue still persists, try switching to a different them, such as twentyten or twentytwelve to see if the problem is with your theme. Once you've found the problem, contact the developer for assistance getting the issue resolved.
 
 = I have a problem or a bug =
 
@@ -61,6 +71,15 @@ That's fantastic! Feel free to submit a pull request over at [Github](http://arc
 4. Unordered list styles
 
 == Changelog ==
+
+= 1.2.0 =
+* Updated toggle shortcode to be compatible with jQuery 1.9+
+* Added shortcode parameter to allow the user to set the initial state of the toggle (closed or open)
+* Restricted the dashboard widget to only show up for administrator users
+* Added a filter to simplify prevention of the dashboard widget from loading at all
+* Fixed a bug in the output of custom toggle CSS
+* Improve the JS and CSS file overrides
+* Other small fixes and improvements
 
 = 1.1.2 =
 * Added a color spec to the button hover code for more consistent behavior

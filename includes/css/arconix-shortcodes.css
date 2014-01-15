@@ -1,3 +1,24 @@
+/* 
+ARCONIX SHORTCODES CSS
+--------------------------
+
+PLEASE DO NOT make modifications to this file directly as it will be overwritten on update.
+Instead, save a copy of this file to your theme or child theme directory. It will then be
+loaded in place of the plugin's version and will maintain your changes on upgrade
+
+IMPORTANT NOTE: Since the directory structure will be changing, and image URLS are always loaded
+relative to their current path, the links to the images in this file will also need to change. 
+For example:
+
+    'url(../../images ...'
+
+would have to be changed to
+
+    'url(../../plugins/arconix-shortcodes/images ...'
+
+in order to for the images to be displayed.
+*/
+
 /* Abbreviation Styling
 ------------------------------------------------------------ */
 .arconix-abbr {
@@ -168,7 +189,8 @@
     text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.4);
 }
 
-.arconix-button:hover {
+.arconix-button:hover,
+.arconix-button:visited {
     color: #fff;
     text-decoration: none;
 }
@@ -356,7 +378,8 @@
 
 /* White
 ------------------------------------------------------------ */
-.arconix-button-white {
+.arconix-button-white,
+.arconix-button-white:visited {
     color: #606060 !important;
     border: solid 1px #b7b7b7;
     background: #fff;
@@ -495,7 +518,7 @@
     -webkit-border-radius: 5px;
        -moz-border-radius: 5px;
             border-radius: 5px;
-    background:	none repeat scroll 0 0 #fbfbfb;
+    background: none repeat scroll 0 0 #fbfbfb;
     clear: both;
     border: 1px solid #ddd;
     margin: 10px inherit;
@@ -509,7 +532,7 @@
     position: relative;
 }
 
-.arconix-toggle-title.active { background: url(../../images/toggle-close.png) no-repeat left transparent; }
+.arconix-toggle-title.toggle-open { background: url(../../images/toggle-close.png) no-repeat left transparent; }
 
 .arconix-toggle-content {
     margin-left: 10px;
