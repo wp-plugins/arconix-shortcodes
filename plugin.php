@@ -4,7 +4,7 @@
  * Plugin URI: http://arconixpc.com/plugins/arconix-shortcodes
  * Description: A handy collection of shortcodes for your site.
  *
- * Version: 1.2.0
+ * Version: 2.0.0
  *
  * Author: John Gardner
  * Author URI: http://arconixpc.com
@@ -41,7 +41,7 @@ class Arconix_Shortcodes {
      * @since 1.1.0
      */
     function constants() {
-        define( 'ACS_VERSION',              '1.2.0' );
+        define( 'ACS_VERSION',              '2.0.0' );
         define( 'ACS_URL',                  trailingslashit( plugin_dir_url( __FILE__ ) ) );
         define( 'ACS_INCLUDES_URL',         trailingslashit( ACS_URL . 'includes' ) );
         define( 'ACS_CSS_URL',              trailingslashit( ACS_INCLUDES_URL . 'css' ) );
@@ -60,9 +60,9 @@ class Arconix_Shortcodes {
      * from loading at all, return false to the desired pre_register filters
      *
      * @example add_filter( 'pre_register_arconix_shortcodes_js', '__return_false' );
-     * 
+     *
      * If you'd like to modify the Javascript or CSS that is used by the shortcodes, you can copy the arconix-shortcodes.js
-     * or arconix-shortcodes.css files to the root of your theme's folder. That will be loaded in place of the plugin's 
+     * or arconix-shortcodes.css files to the root of your theme's folder. That will be loaded in place of the plugin's
      * version, which means you can modify it to your heart's content and know the file will be safe when the plugin
      * is updated in the future.
      *
@@ -79,17 +79,21 @@ class Arconix_Shortcodes {
      * @see ACS_VERSION         Defined in this file
      *
      * @since 0.9
-     * @version 1.2.0
+     * @version 2.0.0
      */
     function scripts() {
         // Provide script registration args so they can be filtered if necessary
-        $script_args = apply_filters( 'arconix_jquerytools_reg', array(
+        $jqt_args = apply_filters( 'arconix_jquerytools_reg', array(
             'url' => 'http://cdn.jquerytools.org/1.2.7/tiny/jquery.tools.min.js',
             'ver' => '1.2.7',
             'dep' => 'jquery'
         ) );
 
-        wp_register_script( 'jquery-tools', esc_url( $script_args['url'] ), array( $script_args['dep'] ), $script_args['ver'], true );
+        wp_register_script( 'jquery-tools', esc_url( $jqt_args['url'] ), array( $jqt_args['dep'] ), $jqt_args['ver'], true );
+
+
+        // Use the .min files if SCRIPT_DEBUG is turned off.
+        $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
         // Register the javascript - Check the child theme directory first, the parent theme second, otherwise load the plugin version
         if( apply_filters( 'pre_register_arconix_shortcodes_js', true ) ) {
@@ -98,8 +102,8 @@ class Arconix_Shortcodes {
             elseif( file_exists( get_template_directory() . '/arconix-shortcodes.js' ) )
                 wp_register_script( 'arconix-shortcodes-js', get_template_directory_uri() . '/arconix-shortcodes.js', array( 'jquery-tools' ), ACS_VERSION, true );
             else
-                wp_register_script( 'arconix-shortcodes-js', ACS_INCLUDES_URL . 'arconix-shortcodes.js', array( 'jquery-tools' ), ACS_VERSION, true );
-        }        
+                wp_register_script( 'arconix-shortcodes-js', ACS_INCLUDES_URL . "arconix-shortcodes{$suffix}.js", array( 'jquery-tools' ), ACS_VERSION, true );
+        }
 
         // Load the CSS - Check the child theme directory first, the parent theme second, otherwise load the plugin version
         if( apply_filters( 'pre_register_arconix_shortcodes_css', true ) ) {
@@ -108,9 +112,16 @@ class Arconix_Shortcodes {
             elseif( file_exists( get_template_directory() . '/arconix-shortcodes.css' ) )
                 wp_enqueue_style( 'arconix-shortcodes', get_template_directory_uri() . '/arconix-shortcodes.css', false, ACS_VERSION );
             else
-                wp_enqueue_style( 'arconix-shortcodes', ACS_CSS_URL . 'arconix-shortcodes.css', false, ACS_VERSION );
+                wp_enqueue_style( 'arconix-shortcodes', ACS_CSS_URL . "arconix-shortcodes{$suffix}.css", false, ACS_VERSION );
         }
-        
+
+        // Allow FontAwesome registration params to be filtered so different versions can be loaded if needed
+        $fa_args = apply_filters( 'arconix_fontawesome_css', array(
+            'url' => '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
+            'ver' => '4.2.0',
+        ));
+
+        wp_enqueue_style( 'font-awesome', $fa_args['url'], false, $fa_args['ver'] );
     }
 
     /**
@@ -159,7 +170,7 @@ class Arconix_Shortcodes {
     /**
      * Adds a news widget to the dashboard.
      *
-     * If the filter is returned false or the logged in user isn't an Admin user, it will prevent the dashboard widget 
+     * If the filter is returned false or the logged in user isn't an Admin user, it will prevent the dashboard widget
      * from loading. It's a little cleaner than other solutions available.
      *
      * @example add_filter( 'pre_register_arconix_shortcodes_dashboard_widget', '__return_false' );
@@ -171,7 +182,7 @@ class Arconix_Shortcodes {
      * @version 1.2.0
      */
     function dashboard_widget() {
-        if( apply_filters( 'pre_register_arconix_shortcodes_dashboard_widget', true ) and 
+        if( apply_filters( 'pre_register_arconix_shortcodes_dashboard_widget', true ) and
             apply_filters( 'arconix_shortcodes_dashboard_widget_security', current_user_can( 'manage_options' ) ) )
                 wp_add_dashboard_widget( 'ac-shortcodes', 'Arconix Shortcodes', array( $this, 'acs_dash_widget' ) );
     }

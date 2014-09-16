@@ -1,0 +1,89 @@
+// Box Mixins
+//
+// @since 2.0
+//
+// @param @c - desired background color
+.shortcode-box( @c: #aaa ) {
+    background-color: @c;
+}
+
+.shortcode-box( @c: #aaa ) when ( lightness( @c ) >= 66% ) {
+    color: darken( @c, 55% );
+    
+    a {
+        color: darken( @c, 55% ) !important;
+    }
+}
+
+.shortcode-box( @c: #aaa ) when ( lightness( @c ) < 66% ) {
+    color: #fff;
+
+    a {
+        color: #fff !important;
+        //color: darken( @c, 45% );
+    }
+
+}
+
+/* Box Styling
+------------------------------------------------------------ */
+.arconix-box {
+    clear: both;
+    line-height: 1.75;
+    margin: 1em 0;
+    padding: 1em;
+    
+    i.pull-left {
+        margin-right: 0.75em;
+    }
+    
+    a {
+        text-decoration: underline;
+        
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+.arconix-box-blue { 
+    .shortcode-box( @blue );
+}
+
+.arconix-box-green {
+    .shortcode-box( @green );
+}
+
+.arconix-box-gray,
+.arconix-box-grey {
+    .shortcode-box( @gray );
+}
+
+.arconix-box-lgray,
+.arconix-box-lgrey {
+    .shortcode-box( @lgray );
+}
+
+.arconix-box-red {
+    .shortcode-box( @red );
+}
+
+.arconix-box-tan {
+    .shortcode-box( @tan );
+}
+
+.arconix-box-yellow {
+    .shortcode-box( @yellow );
+}
+
+.arconix-box-purple {
+    .shortcode-box( @purple );
+}
+
+.arconix-box-black {
+    .shortcode-box( @black );
+}
+
+.arconix-box-orange {
+    .shortcode-box( @orange );
+}
